@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Search Engine</title>
+    <link rel="stylesheet" type="text/css" href="interface.css">
+    <script src="interface.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+</head>
+<body class="light-mode">
+    <div class="top-right-widgets">
+        <div id="clock"></div>
+        <div id="weather-widget">
+            <span id="weather-temp">Loading...</span>
+            <span id="weather-icon"></span>
+        </div>
+        <button id="theme-toggle" onclick="toggleTheme()">
+            <i id="theme-icon" class="fas fa-moon"></i>
+        </button>
+    </div>
+    
+
+    <div class="container">
+        <center>
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <h1 id="search_title">My Search Engine</h1>
+            <br>
+            <form id="search-form" onsubmit="handleSearch(); return false;">
+                <input type="text" id="search-input" placeholder="Enter your search query..." autocomplete="off">
+                <div class="input-icons">
+                    <i class="fas fa-search"></i>
+                    <i class="fas fa-microphone"></i>
+                    <i class="fas fa-camera"></i>
+                </div>
+                <br>
+                <button type="submit" id="search-button">Search</button>
+            </form>
+            <div id="listening-status" style="display:none; margin-top:10px; color:#4285F4; font-weight: bold;">
+                🎙️ Listening..
+            </div>
+            
+            <br>
+        <div id="drop-zone">
+            📥 Drag & drop an image here or click the 📷 icon
+        </div>
+
+        
+        <div id="results"></div>
+    </center>
+
+    </div>
+
+    <footer>
+        <p>Powered by My Search Engine</p>
+        &copy; 2025 My Search Engine. All rights reserved.
+    </footer>
+        <!-- Settings Slider -->
+        <div id="settings-slider">
+            <br><br><br>
+
+            <h3>Settings</h3>
+            <div class="history-section">
+                <h4>History</h4>
+                <ul id="history-list">
+                    <!-- History items will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+    
+        <!-- Settings Icon -->
+        <div id="settings-icon" onclick="toggleSlider()">
+            <i class="fas fa-cogs"></i>
+        </div>
+</body>
+</html>

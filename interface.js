@@ -1,0 +1,255 @@
+function toggleTheme() {
+    const body = document.body;
+    const toggleButton = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+
+    if (body.classList.contains('dark-mode')) {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    } else {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    }
+}
+function handleSearch() {
+    const query = document.getElementById('search-input').value.trim();
+    const resultsDiv = document.getElementById('results');
+    const safeSearch = document.getElementById('safe-search-toggle').checked;
+
+    if (query === '') {
+        resultsDiv.innerHTML = '<p>Please enter a search query.</p>';
+        return;
+    }
+
+    const results = [
+        `Result 1 for "${query}"${safeSearch ? ' (Safe)' : ''}`,
+        `Result 2 for "${query}"${safeSearch ? ' (Safe)' : ''}`,
+        `Result 3 for "${query}"${safeSearch ? ' (Safe)' : ''}`,
+    ];
+
+    resultsDiv.innerHTML = results.map(item =>
+        `<div class="result-item">${item}</div>`
+    ).join('');
+}
+
+function toggleTheme() {
+    const body = document.body;
+    const icon = document.getElementById('theme-icon');
+    const slider = document.getElementById('settings-slider');
+
+    if (body.classList.contains('light-mode')) {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        slider.classList.add('dark-mode');  // Ensure the slider changes with dark mode
+    } else {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+        slider.classList.remove('dark-mode'); // Remove dark mode from the slider
+    }
+}
+window.onload = function () {
+    const searchInput = document.getElementById('search-input');
+    const micIcon = document.querySelector('.fa-microphone');
+    const statusDiv = document.getElementById('listening-status');
+    let silenceTimeout;
+
+    // Start mic on icon click
+    micIcon.addEventListener('click', () => {
+        if (!window.annyang) {
+            alert('Voice recognition not supported.');
+            return;
+        }
+
+        // Reset any previous state
+        annyang.abort();
+        annyang.removeCommands();
+        annyang.removeCallback();
+
+        // UI ON
+        micIcon.classList.add('listening');
+        statusDiv.style.display = 'block';
+
+        // Live update from speech
+        annyang.addCallback('result', function (phrases) {
+            const phrase = phrases[0];
+            searchInput.value = phrase;
+
+            // Reset silence timer
+            if (silenceTimeout) clearTimeout(silenceTimeout);
+            silenceTimeout = setTimeout(() => {
+                annyang.abort();         // Stop listening
+                handleSearch();          // Do the search
+                // DON'T hide UI here; wait for 'end'
+            }, 5000);
+        });
+
+        // UI OFF only after mic stops
+        annyang.addCallback('end', () => {
+            micIcon.classList.remove('listening');
+            statusDiv.style.display = 'none';
+        });
+
+        annyang.start({ autoRestart: false, continuous: true });
+    });
+
+    // Search icon click
+    document.querySelector('.fa-search').addEventListener('click', handleSearch);
+
+    // Camera icon
+    function handleImageFile(file) {
+        const maxSizeMB = 5;
+        const fileSizeMB = file.size / (1024 * 1024);
+        const searchInput = document.getElementById('search-input');
+        const resultsDiv = document.getElementById('results');
+    
+        if (fileSizeMB > maxSizeMB) {
+            searchInput.value = '';
+            resultsDiv.innerHTML = `<p style="color:red;">Image too large (${fileSizeMB.toFixed(2)} MB). Max allowed is ${maxSizeMB} MB.</p>`;
+            return;
+        }
+    
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const imgPreview = `<img src="${e.target.result}" alt="Image Preview" style="max-width:200px; border-radius:10px; margin-bottom:10px;">`;
+            const fileInfo = `<p><strong>File:</strong> ${file.name}<br><strong>Size:</strong> ${fileSizeMB.toFixed(2)} MB</p>`;
+            searchInput.value = `Image: ${file.name}`;
+            resultsDiv.innerHTML = imgPreview + fileInfo;
+    
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    // 📷 Camera icon click
+    document.querySelector('.fa-camera').addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.click();
+    
+        input.onchange = () => {
+            if (input.files.length > 0) {
+                handleImageFile(input.files[0]);
+            }
+        };
+    });
+    
+    // 🖱️ Drag & Drop
+    const dropZone = document.getElementById('drop-zone');
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#4285F4';
+    });
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = '#ccc';
+    });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#ccc';
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            handleImageFile(file);
+        } else {
+            alert('Please drop a valid image file.');
+        }
+    });
+    
+    
+};
+
+let sliderOpen = false;
+
+function toggleSlider() {
+    const slider = document.getElementById('settings-slider');
+    if (sliderOpen) {
+        slider.classList.remove('open');
+    } else {
+        slider.classList.add('open');
+    }
+    sliderOpen = !sliderOpen;
+}
+// Real-time clock
+function updateClock() {
+    const clock = document.getElementById('clock');
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+
+    // Add leading zero to minutes and seconds if less than 10
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    // Update clock every second
+    clock.innerHTML = `${hours}:${minutes}:${seconds}`;
+}
+
+// Fetch weather data from OpenWeatherMap
+function getWeather() {
+    const apiKey = '8f2eada28366f5ad2a4295a1dec62b14';  // Replace with your actual API key
+    const city = 'Cairo';  // Example city (you can replace with your own)
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+    // Log the URL to ensure the correct API call is being made
+    console.log("Fetching weather data from:", weatherUrl);
+
+    // Start fetching the weather data
+    fetch(weatherUrl)
+        .then(response => {
+            // Check if the response is successful (status 200)
+            if (!response.ok) {
+                throw new Error(`Failed to fetch weather data: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Check if we got the data and log it
+            console.log("Weather data:", data);
+
+            const temp = data.main.temp;
+            const iconCode = data.weather[0].icon;
+            const weatherIcon = `https://openweathermap.org/img/wn/${iconCode}.png`;
+
+            // Update the weather widget with temperature and icon
+            document.getElementById('weather-temp').innerText = `${temp}°C`;
+            document.getElementById('weather-icon').innerHTML = `<img src="${weatherIcon}" alt="Weather icon" />`;
+        })
+        .catch(error => {
+            // Log the error in the console for debugging
+            console.error("Error fetching weather:", error);
+
+            // Show a friendly message on the page
+            document.getElementById('weather-temp').innerText = 'Unable to fetch weather';
+            document.getElementById('weather-icon').innerHTML = '';
+        });
+}
+
+// Call getWeather when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    getWeather();
+});
+function updateClock() {
+    const clockElement = document.getElementById('clock');
+    
+    setInterval(function() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        clockElement.innerText = `${hours}:${minutes}:${seconds}`;
+    }, 1000);  // Update every second
+}
+
+// Call functions on page load
+document.addEventListener('DOMContentLoaded', function() {
+    getWeather();  // Fetch weather data
+    updateClock();  // Start the clock
+});

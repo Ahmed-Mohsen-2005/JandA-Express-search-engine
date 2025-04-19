@@ -1,0 +1,301 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode {
+    background-color: #292929;
+    color: #f1f1f1;
+}
+
+.container {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+#search_title {
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size: 60px;
+}
+.theme-toggle-wrapper { 
+    position: absolute;
+    top: 30px;
+    right: 25px;
+}
+
+#theme-toggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.dark-mode #theme-toggle {
+    color: #f1f1f1;
+}
+
+#search-input {
+    width: 60%;
+    height: 25px;
+    padding: 12px 20px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+}
+.search-input-wrapper {
+    position: relative;
+    width: 50%;
+    margin: 0 auto;
+}
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.6; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.fa-microphone.listening {
+    color: #e53935;
+    animation: pulse 1s infinite;
+}
+
+#drop-zone{
+    width: 60%;
+    border: 2px dashed #ccc;
+    padding: 20px; 
+    margin-top: 20px; 
+    border-radius: 10px; 
+    cursor: pointer;
+}
+.input-icons {
+    position: absolute;
+    top: 51.8%;
+    right: 400px;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 10px;
+    color: #373737;
+}
+
+.input-icons i {
+    cursor: pointer;
+}
+
+#search-button {
+    margin-top: 15px;
+    padding: 10px 24px;
+    background-color: #4285F4;
+    border: none;
+    color: white;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#search-button:hover {
+    background-color: #3367D6;
+}
+
+#results {
+    margin-top: 40px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.result-item {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .result-item {
+    background: #1e1e1e;
+    border: 1px solid #333;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #888;
+    opacity: 0;
+    transform: translateY(100%);
+    animation: fadeInUp 1.2s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity:1;
+        transform: translateY(0);
+    }
+}
+
+body.dark-mode footer {
+    background-color: #1a1a1a;
+    color: #aaa;
+}
+#settings-slider {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1000;
+    transition: left 0.3s ease;
+}
+
+#settings-slider.open {
+    left: 0;
+}
+
+#settings-slider h3 {
+    margin-top: 0;
+}
+
+#settings-slider .history-section {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+}
+
+/* Open settings icon */
+#settings-icon {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1100;
+}
+
+body.dark-mode #settings-icon {
+    background-color: #333;
+    color: #fff;
+}
+/* Sidebar styles for dark mode */
+body.dark-mode #settings-slider {
+    background-color: #1a1a1a;
+    color: #ddd;
+}
+
+body.dark-mode #settings-slider h3 {
+    color: #ddd;
+}
+
+body.dark-mode #settings-slider label {
+    color: #ddd;
+}
+
+/* Open settings icon */
+body.dark-mode #settings-icon {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Search box and icons for dark mode */
+body.dark-mode .search-input-wrapper input {
+    background-color: #333;
+    color: #ddd;
+    border: 1px solid #555;
+}
+
+body.dark-mode .search-input-wrapper input::placeholder {
+    color: #aaa;
+}
+
+body.dark-mode #search-button {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+body.dark-mode #search-button:hover {
+    background-color: #555;
+}
+
+/* Safe Search toggle for dark mode */
+body.dark-mode #safe-search-toggle {
+    color: #ddd;
+}
+/* Add these styles to your existing CSS */
+
+/* Top right widgets container */
+.top-right-widgets {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000;
+}
+
+/* Styling for the clock */
+#clock {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* Styling for the weather widget */
+#weather-widget {
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#weather-temp {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#weather-icon {
+    font-size: 18px;
+}
+body.light-mode #clock {
+    color: #333;
+}
+
+body.light-mode #weather-widget {
+    color: #333;
+}
+
+/* Dark Mode */
+body.dark-mode #clock {
+    color: #fff;  /* White text in dark mode */
+}
+
+body.dark-mode #weather-widget {
+    color: #fff;  /* White text in dark mode */
+}
+
+body.dark-mode #weather-temp {
+    color: #fff;  /* White temperature text in dark mode */
+}
+
+body.dark-mode #weather-icon img {
+    filter: brightness(0) invert(1);  /* Lighten the weather icon for dark mode */
+}
