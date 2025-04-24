@@ -247,9 +247,116 @@ function updateClock() {
         clockElement.innerText = `${hours}:${minutes}:${seconds}`;
     }, 1000);  // Update every second
 }
+// ========= HISTORY LOGIC ==========
 
-// Call functions on page load
-document.addEventListener('DOMContentLoaded', function() {
-    getWeather();  // Fetch weather data
-    updateClock();  // Start the clock
+// Save query and update UI
+function saveToHistory(query) {
+    if (!query.trim()) return;
+
+    let history = JSON.parse(localStorage.getItem('searchHistory') || "[]");
+
+    // Avoid duplicates (case-insensitive)
+    if (!history.some(item => item.toLowerCase() === query.toLowerCase())) {
+        history.unshift(query); 
+        localStorage.setItem('searchHistory', JSON.stringify(history.slice(0, 100))); // Limit to 10 items
+        updateHistoryUI();
+    }
+}
+
+// Update sidebar list
+function updateHistoryUI() {
+    const historyList = document.getElementById('history-list');
+    let history = JSON.parse(localStorage.getItem('searchHistory') || "[]");
+
+    historyList.innerHTML = history
+        .map(item => `<li onclick="reSearch('${item.replace(/'/g, "\\'")}')">${item}</li>`)
+        .join('');
+}
+
+// Trigger search from history
+function reSearch(query) {
+    document.getElementById('search-input').value = query;
+    handleSearch();
+}
+
+// Clear history
+function clearHistory() {
+    localStorage.removeItem('searchHistory');
+    updateHistoryUI();
+}
+
+// ========== ENHANCED SEARCH ==========
+
+function handleSearch() {
+    const query = document.getElementById('search-input').value.trim();
+    const resultsDiv = document.getElementById('results');
+
+    if (!query) {
+        resultsDiv.innerHTML = '<p>Please enter a search query.</p>';
+        return;
+    }
+
+    saveToHistory(query); // Save it!
+
+    const results = [
+        `Result 1 for "${query}"`,
+        `Result 2 for "${query}"`,
+        `Result 3 for "${query}"`
+    ];
+
+    resultsDiv.innerHTML = results.map(item =>
+        `<div class="result-item">${item}</div>`
+    ).join('');
+}
+
+// Load history on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateHistoryUI();
+    getWeather();
+    updateClock();
 });
+const sonic = document.getElementById('sonic');
+const smokeContainer = document.getElementById('smoke-container');
+
+let pos = -300;
+const interval = 10;
+const speed = 15;
+
+const run = setInterval(() => {
+  pos += speed;
+  sonic.style.left = pos + 'px';
+
+  // Create smoke puffs
+  for (let i = 0; i < 3; i++) {
+    const puff = document.createElement('div');
+    puff.classList.add('smoke-puff');
+    const size = 20 + Math.random() * 80;
+    puff.style.width = size + 'px';
+    puff.style.height = size * 0.6 + 'px';
+    puff.style.left = (pos - 80 + Math.random() * 60) + 'px';
+    smokeContainer.appendChild(puff);
+  }
+
+  // Create speed streaks
+  for (let i = 0; i < 3; i++) {
+    const line = document.createElement('div');
+    line.classList.add('speed-line');
+    line.style.left = (pos + 100 - Math.random() * 100) + 'px';
+    line.style.bottom = (38 + Math.random() * 10) + '%';
+    smokeContainer.appendChild(line);
+  }
+
+  // Stop when Sonic reaches the edge
+  const sonicWidth = sonic.offsetWidth;
+  if (pos + sonicWidth >= window.innerWidth) {
+    clearInterval(run);
+
+    // Fade out
+    sonic.style.opacity = 0;
+
+    // After fade-out ends, remove Sonic (optional)
+    setTimeout(() => {
+      sonic.style.display = 'none';
+    }, 800); // Match this with your CSS transition time
+  }
+}, interval);
