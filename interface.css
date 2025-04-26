@@ -73,7 +73,7 @@ body {
 }
 .input-icons {
     position: absolute;
-    top: 49%;
+    top: 49.5%;
     right: 415px;
     transform: translateY(-50%);
     display: flex;
