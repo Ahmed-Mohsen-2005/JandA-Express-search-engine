@@ -6,7 +6,9 @@
     --input-bg: #2a2a2a;
     --cat-bg: #181818;
     --loader-border: #1f1f1f;
+    --card-bg: rgba(255, 255, 255, 0.05); /* dark mode */
   }
+
   
   body {
     margin: 0;
@@ -78,7 +80,7 @@
   
   .result-card {
     background: var(--card-bg);
-    box-shadow: 0 8px 32px rgba(31,38,135,0.37);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     backdrop-filter: blur(10px);
     padding: 20px;
     border-radius: 20px;
@@ -87,12 +89,17 @@
     gap: 15px;
     align-items: center;
     cursor: pointer;
-    transition: 0.4s;
+    transform: translateY(0);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.3s ease;
   }
   
+  
   .result-card:hover {
-    transform: translateY(-5px) scale(1.03);
+    transform: translateY(-12px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    background: var(--card-bg); /* Always from variable */
   }
+  
   
   .result-card img {
     width: 70px;
@@ -295,7 +302,12 @@
   
   body.light-mode {
     background: linear-gradient(to bottom right, #ffffff, #f9f9f9);
+    --card-bg: rgba(0, 0, 0, 0.05); /* light mode */
   }
+  body.dark-mode .result-card:hover {
+    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.08);
+  }
+  
   
   .categories button.active {
     box-shadow: 0 4px 10px rgba(79,195,247,0.4);
