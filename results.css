@@ -300,4 +300,27 @@
   .categories button.active {
     box-shadow: 0 4px 10px rgba(79,195,247,0.4);
   }
+  .page-size-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    font-size: 16px;
+    color: var(--text);
+  }
+  
+  #page-size {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: var(--input-bg);
+    color: var(--text);
+    border: 1px solid var(--light-border, #ccc);
+    transition: all 0.3s;
+  }
+  
+  #page-size:hover {
+    background: var(--primary);
+    color: #121212;
+  }
   

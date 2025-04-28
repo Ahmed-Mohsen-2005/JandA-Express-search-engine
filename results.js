@@ -231,3 +231,10 @@ let resultsData = [...Array(50).keys()].map(i => ({
   function goBack() {
     window.location.href = 'interface.html'; // 🔥 Change this to your actual previous page URL
   }  
+  function changePageSize() {
+    const selected = document.getElementById('page-size').value;
+    itemsPerPage = parseInt(selected);
+    currentPage = 1; // Reset to first page
+    loadResults();
+  }
+  
