@@ -57,7 +57,12 @@
   </div>
   
   
-
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = urlParams.get('q');
+    document.getElementById('search-input').value = searchTerm;
+    loadResults(searchTerm);
+  </script>
   <script src="/static/results.js"></script>
 </body>
 </html>

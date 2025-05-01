@@ -360,3 +360,9 @@ const run = setInterval(() => {
     }, 800); // Match this with your CSS transition time
   }
 }, interval);
+function redirectToResults() {
+    const query = document.getElementById('search-input').value;
+    if (query.trim()) {
+      window.location.href = `/results?q=${encodeURIComponent(query)}`;
+    }
+  }

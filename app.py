@@ -32,15 +32,18 @@
 # def homepage():
 #     return render_template("interface.html")
 
-
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from models.retrievers import search_tfidf, search_bm25, search_unigram
 
 app = Flask(__name__)
 
 @app.route("/")
-def home():
-    return "Search Engine Backend is Running!"
+def interface():
+    return render_template("interface.html")
+
+@app.route("/results")
+def results_page():
+    return render_template("results.html")
 
 @app.route("/search", methods=["GET"])
 def search():
@@ -61,5 +64,5 @@ def search():
 
     return jsonify(results.to_dict(orient="records"))
 
-if __name__ == "_main_":
+if __name__ == "__main__":
     app.run(debug=True)
