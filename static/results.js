@@ -1,5 +1,3 @@
-// results.js
-
 let resultsData = [];
 let itemsPerPage = 10;
 let currentPage = 1;
@@ -23,6 +21,7 @@ function renderResults() {
   const toShow = resultsData.slice(start, end);
 
   results.innerHTML = '';
+  console.log("Results being shown:", toShow);
 
   toShow.forEach(item => {
     const card = document.createElement('div');
@@ -86,8 +85,11 @@ function filterResults(category) {
 }
 
 function toggleTheme() {
-  document.body.classList.toggle('light-mode');
-  document.body.classList.toggle('dark-mode');
+  const body = document.body;
+  const isLight = body.classList.toggle('light-mode');
+  body.classList.toggle('dark-mode', !isLight);
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  renderResults();
 }
 
 function scrollTopSmooth() {
@@ -130,6 +132,12 @@ function clearWishlist() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (searchTerm) loadResults(searchTerm);
+  const theme = localStorage.getItem('theme') || 'dark';
+  if (theme === 'light') {
+    document.body.classList.add('light-mode');
+  } else {
+    document.body.classList.add('dark-mode');
+  }
+  if (typeof searchTerm !== 'undefined') loadResults(searchTerm);
   updateWishlistUI();
 });

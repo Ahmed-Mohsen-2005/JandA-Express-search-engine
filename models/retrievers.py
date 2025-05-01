@@ -48,9 +48,10 @@ def enrich_results(results):
         results['category'] = 'Uncategorized'
     if 'product_name' not in results.columns:
         results['product_name'] = 'Unnamed Product'
-    if 'details' not in results.columns:
-        results['details'] = 'No details provided'
-    return results[['docno', 'product_name', 'description', 'details', 'category', 'score']]
+
+    # ✅ Return all the frontend needs:
+    return results[['docno', 'description',  'rank','score', 'category', 'product_name']]
+
 
 def search_tfidf(query):
     query = preprocessing(query)
