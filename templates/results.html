@@ -6,17 +6,16 @@
   <title>J&A Express - Advanced Search</title>
   <link rel="stylesheet" href="/static/results.css">
 </head>
-<body>
-    <header class="header">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <button onclick="goBack()" id="back-btn">⬅️ Back</button>
-          <div class="logo">J&A Express</div>
-        </div>
-        <input type="text" id="search-input" placeholder="Search products..." oninput="liveSearch()">
-        <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
-        <button id="wishlist-toggle" onclick="showWishlist()">❤️</button>
-      </header>
-      
+<body class="dark-mode">
+  <header class="header">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <button onclick="goBack()" id="back-btn">⬅️ Back</button>
+      <div class="logo">J&A Express</div>
+    </div>
+    <input type="text" id="search-input" placeholder="Search products...">
+    <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
+    <button id="wishlist-toggle" onclick="showWishlist()">❤️</button>
+  </header>
 
   <nav class="categories">
     <button onclick="filterResults('all')" class="active">All</button>
@@ -28,6 +27,7 @@
   </nav>
 
   <main id="results" class="results"></main>
+
   <div class="page-size-control">
     <label for="page-size">Results per page:</label>
     <select id="page-size" onchange="changePageSize()">
@@ -35,10 +35,9 @@
       <option value="20">20</option>
       <option value="50">50</option>
       <option value="100">100</option>
-      <option value="1000">1000</option>
     </select>
   </div>
-  
+
   <div id="pagination" class="pagination"></div>
 
   <button onclick="scrollTopSmooth()" id="back-to-top">⬆️</button>
@@ -55,14 +54,12 @@
       </div>
     </div>
   </div>
-  
-  
+
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchTerm = urlParams.get('q');
+    const searchTerm = "{{ query }}";  // passed from Flask template
     document.getElementById('search-input').value = searchTerm;
-    loadResults(searchTerm);
   </script>
+  
   <script src="/static/results.js"></script>
 </body>
 </html>

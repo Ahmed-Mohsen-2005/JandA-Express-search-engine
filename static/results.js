@@ -1,3 +1,5 @@
+// results.js
+
 let resultsData = [];
 let itemsPerPage = 10;
 let currentPage = 1;
@@ -13,7 +15,6 @@ async function loadResults(query) {
   }
 }
 
-// 👇 DEFINE IT RIGHT AFTER loadResults
 function renderResults() {
   const results = document.getElementById('results');
   const pagination = document.getElementById('pagination');
@@ -28,14 +29,15 @@ function renderResults() {
     card.className = 'result-card';
     card.innerHTML = `
       <div class="result-info">
-        <h3>${item.docno}</h3>
+        <h3>${item.docno} <span class="favorite-star" onclick="toggleFavorite(this, '${item.docno}')">★</span></h3>
         <p>${item.description}</p>
+        <p class="url">Score: ${item.score.toFixed(2)}</p>
+        <p class="badge">${item.category || 'Uncategorized'}</p>
       </div>
     `;
     results.appendChild(card);
   });
 
-  // Pagination controls
   pagination.innerHTML = '';
 
   if (currentPage > 1) {
@@ -62,3 +64,72 @@ function renderResults() {
     pagination.appendChild(next);
   }
 }
+
+function changePageSize() {
+  itemsPerPage = parseInt(document.getElementById('page-size').value);
+  currentPage = 1;
+  renderResults();
+}
+
+function filterResults(category) {
+  const filtered = category === 'all'
+    ? resultsData
+    : resultsData.filter(item => item.category && item.category.toLowerCase() === category.toLowerCase());
+  currentPage = 1;
+  resultsData = filtered;
+  renderResults();
+
+  document.querySelectorAll('.categories button').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = Array.from(document.querySelectorAll('.categories button')).find(btn =>
+    btn.textContent.toLowerCase().includes(category.toLowerCase()));
+  if (activeBtn) activeBtn.classList.add('active');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+}
+
+function scrollTopSmooth() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack() {
+  window.history.back();
+}
+
+function showWishlist() {
+  document.getElementById('wishlist-modal').style.display = 'block';
+}
+
+function closeWishlist() {
+  document.getElementById('wishlist-modal').style.display = 'none';
+}
+
+function toggleFavorite(el, id) {
+  el.classList.toggle('favorited');
+  let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+  if (wishlist.includes(id)) {
+    wishlist = wishlist.filter(x => x !== id);
+  } else {
+    wishlist.push(id);
+  }
+  localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  updateWishlistUI();
+}
+
+function updateWishlistUI() {
+  const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+  const wishlistItems = document.getElementById('wishlist-items');
+  wishlistItems.innerHTML = wishlist.map(id => `<div>${id}</div>`).join('');
+}
+
+function clearWishlist() {
+  localStorage.removeItem('wishlist');
+  updateWishlistUI();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (searchTerm) loadResults(searchTerm);
+  updateWishlistUI();
+});

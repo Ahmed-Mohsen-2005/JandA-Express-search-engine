@@ -20,19 +20,18 @@
             <i id="theme-icon" class="fas fa-moon"></i>
         </button>
     </div>
-    
 
     <div class="container">
         <center>
             <br><br><br><br><br><br><br><br><br>
-                <img id="sonic" src="sonic2.gif" class="sonic" alt="Sonic Running"/>
-                <div class="smoke-container" id="smoke-container"></div>
-                <p class="title">J&A Express</p>
-                <br><br><br><br><br><br><br><br><br><br><br><br>
-                <form id="search-form" onsubmit="redirectToResults(); return false;">
-                    <input type="text" id="search-input" placeholder="Enter your search query..." autocomplete="off">
+            <img id="sonic" src="/static/sonic2.gif" class="sonic" alt="Sonic Running"/>
+            <div class="smoke-container" id="smoke-container"></div>
+            <p class="title">J&A Express</p>
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <form id="search-form" method="GET" action="/results">
+                <input type="text" id="search-input" name="q" placeholder="Enter your search query..." autocomplete="off" required>
                 <div class="input-icons">
-                    <i class="fas fa-search"></i>
+                    <i class="fas fa-search" onclick="document.getElementById('search-form').submit();"></i>
                     <i class="fas fa-microphone"></i>
                     <i class="fas fa-camera"></i>
                 </div>
@@ -42,43 +41,36 @@
             <div id="listening-status" style="display:none; margin-top:10px; color:#4285F4; font-weight: bold;">
                 🎙️ Listening..
             </div>
-            
             <br>
-        <div id="drop-zone">
-            📥 Drag & drop an image here or click the 📷 icon
-        </div>
-
-        
-        <div id="results"></div>
-    </center>
-
+            <div id="drop-zone">
+                📥 Drag & drop an image here or click the 📷 icon
+            </div>
+            <div id="results"></div>
+        </center>
     </div>
 
     <footer>
         <p>Powered by My Search Engine</p>
         &copy; 2025 My Search Engine. All rights reserved.
     </footer>
-        <!-- Settings Slider -->
-        <div id="settings-slider">
-            <br><br><br>
 
-            <h3>Settings</h3>
-            <div class="history-section">
-                <h4>History</h4>
-                <ul id="history-list">
-                    <!-- History items will be dynamically added here -->
-                </ul>
-            </div>
-            <!-- From Uiverse.io by andrew-demchenk0 --> 
-<button class="button" type="button" onclick="clearHistory()">
-    <span class="button__text">Delete History</span>
-    <span class="button__icon"><svg class="svg" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path><line style="stroke:#fff;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" x1="80" x2="432" y1="112" y2="112"></line><path d="M192,112V72h0a23.93,23.93,0,0,1,24-24h80a23.93,23.93,0,0,1,24,24h0v40" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="256" x2="256" y1="176" y2="400"></line><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="184" x2="192" y1="176" y2="400"></line><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="328" x2="320" y1="176" y2="400"></line></svg></span>
-  </button>
+    <!-- Settings Slider -->
+    <div id="settings-slider">
+        <br><br><br>
+        <h3>Settings</h3>
+        <div class="history-section">
+            <h4>History</h4>
+            <ul id="history-list"></ul>
         </div>
-    
-        <!-- Settings Icon -->
-        <div id="settings-icon" onclick="toggleSlider()">
-            <i class="fas fa-cogs"></i>
-        </div>
+        <button class="button" type="button" onclick="clearHistory()">
+            <span class="button__text">Delete History</span>
+            <span class="button__icon"><svg class="svg" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path><line style="stroke:#fff;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" x1="80" x2="432" y1="112" y2="112"></line><path d="M192,112V72h0a23.93,23.93,0,0,1,24-24h80a23.93,23.93,0,0,1,24,24h0v40" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="256" x2="256" y1="176" y2="400"></line><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="184" x2="192" y1="176" y2="400"></line><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="328" x2="320" y1="176" y2="400"></line></svg></span>
+        </button>
+    </div>
+
+    <!-- Settings Icon -->
+    <div id="settings-icon" onclick="toggleSlider()">
+        <i class="fas fa-cogs"></i>
+    </div>
 </body>
 </html>
