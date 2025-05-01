@@ -27,3 +27,9 @@ df_2 = pd.read_sql('select * from our_corpus_preprocess', engine)
 print(df_2)
 
 app = Flask(__name__)
+
+@app.route("/")
+def homepage():
+    return render_template("interface.html")
+
+
