@@ -15,32 +15,33 @@ df2["docno"] = df2["docno"].astype(str)
 # Fill missing data to avoid merge crashes
 df2 = df2.fillna("No description available")
 
+import re
+
 def parse_flat_text_blob(text):
-    keys = [
-        'title', 'brand', 'description', 'finalprice', 'currency', 'availability',
-        'reviewscount', 'categories', 'buyboxseller', 'url', 'imageurl',
-        'rating', 'discount', 'topreview'
+    fields = [
+        'title', 'brand', 'description', 'final_price', 'currency', 'availability',
+        'reviews_count', 'categories', 'buybox_seller', 'url', 'image_url',
+        'rating', 'discount', 'top_review'
     ]
-
-    result = {key: 'N/A' for key in keys}
-
-    # Split the text by known keys
-    for i, key in enumerate(keys):
-        pattern = f"{key}:"
-        try:
-            # Start from this key
-            start = text.index(pattern) + len(pattern)
-            # Look for the next key's position, or end of string
-            end = min([text.index(f"{k}:", start) for k in keys[i+1:] if f"{k}:" in text[start:]], default=len(text))
-            value = text[start:end].strip()
-            result[key] = value
-        except ValueError:
-            continue  # Key not found, skip
-
+    
+    result = {key: 'N/A' for key in fields}
+    
+    # Use a regex pattern to safely extract each field's value
+    pattern = r'(\btitle|brand|description|final_price|currency|availability|reviews_count|categories|buybox_seller|url|image_url|rating|discount|top_review):\s*(.*?)(?=\s+\b(?:' + '|'.join(fields) + '):|$)'
+    
+    matches = re.findall(pattern, text, re.IGNORECASE)
+    
+    for key, value in matches:
+        key = key.strip().lower()
+        if key in result:
+            result[key] = value.strip().strip(",")
+    
     return pd.Series(result)
+
 
 parsed_df = df2["text"].apply(parse_flat_text_blob)
 df2 = pd.concat([df2, parsed_df], axis=1)
+
 
 
 # Add fake categories if missing
@@ -79,7 +80,10 @@ def enrich_results(results):
 
 
     # Return the full document text instead of description
-    return results[['docno', 'text', 'rank', 'score', 'category', 'title', 'brand', 'description', 'finalprice', 'currency', 'availability', 'reviewscount', 'categories', 'buyboxseller', 'url', 'imageurl', 'rating', 'discount', 'topreview']]
+    return results[['docno', 'rank', 'score', 'category', 
+                    'title', 'brand', 'description', 'final_price', 'currency',
+                    'availability', 'reviews_count', 'categories', 'buybox_seller',
+                    'url', 'image_url', 'rating', 'discount', 'top_review']]
 
 
 
