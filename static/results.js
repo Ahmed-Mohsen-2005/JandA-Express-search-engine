@@ -33,23 +33,26 @@ function renderResults() {
     const card = document.createElement('div');
     card.className = 'result-card';
     card.innerHTML = `
+    <img src="${item.image_url || ''}" alt="Product Image" style="width: 100px; height: 100px; border-radius: 12px; object-fit: cover;" />
     <div class="result-info">
-      <h3>${item.product_name} <span class="favorite-star" onclick="toggleFavorite(this, '${item.docno}')">★</span></h3>
-      <img src="${item.image_url}" alt="${item.product_name}" style="max-width: 120px; border-radius: 8px; margin: 10px 0;" />
-      <p><strong>Brand:</strong> ${item.brand}</p>
-      <p><strong>Description:</strong> ${highlightMatch(item.description, searchTerm)}</p>
-      <p><strong>Price:</strong> ${item.final_price} ${item.currency} ${item.discount ? `(-${item.discount}% off)` : ''}</p>
-      <p><strong>Availability:</strong> ${item.availability}</p>
-      <p><strong>Rating:</strong> ⭐ ${item.rating} (${item.reviews_count} reviews)</p>
-      <p><strong>Top Review:</strong> "${item.top_review}"</p>
-      <p><strong>Sold by:</strong> ${item.buybox_seller}</p>
-      <p><strong>Categories:</strong> ${item.categories}</p>
-      <p class="url"><a href="${item.url}" target="_blank">View on Amazon</a></p>
+      <h3>${item.title || 'Unnamed Product'}
+        <span class="favorite-star" onclick="toggleFavorite(this, '${item.docno}')">★</span>
+      </h3>
+      <p><strong>Brand:</strong> ${item.brand || 'N/A'}</p>
+      <p><strong>Description:</strong> ${item.description || 'N/A'}</p>
+      <p><strong>Final Price:</strong> ${item.final_price || 'N/A'} ${item.currency || ''} (${item.discount || 0}% off)</p>
+      <p><strong>Availability:</strong> ${item.availability || 'N/A'}</p>
+      <p><strong>Reviews Count:</strong> ${item.reviews_count || 'N/A'}</p>
+      <p><strong>Rating:</strong> ⭐ ${item.rating || 'N/A'}</p>
+      <p><strong>Top Review:</strong> "${item.top_review || 'N/A'}"</p>
+      <p><strong>Sold By:</strong> ${item.buybox_seller || 'N/A'}</p>
+      <p><strong>Categories:</strong> ${item.categories || 'N/A'}</p>
+      <a href="${item.url || '#'}" target="_blank" style="color:#4fc3f7; text-decoration:underline;">View on Amazon</a>
       <p class="badge">${item.category || 'Uncategorized'}</p>
-      <p style="font-size: 13px; color: #81d4fa;">Score: ${item.score.toFixed(2)}</p>
+      <p class="url">Score: ${item.score?.toFixed(2) || '0.00'}</p>
     </div>
+  `;
   
-    `;
     results.appendChild(card);
   });
 
