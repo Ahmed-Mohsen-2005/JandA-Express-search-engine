@@ -338,9 +338,17 @@
     color: #121212;
   }
   mark {
-    background: yellow;
+    background: rgb(0, 213, 255);
     color: black;
     padding: 0 2px;
     border-radius: 3px;
+  }
+  .result-info img {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .result-info a {
+    color: var(--primary);
+    text-decoration: underline;
   }
   

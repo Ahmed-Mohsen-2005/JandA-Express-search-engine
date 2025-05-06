@@ -15,6 +15,34 @@ df2["docno"] = df2["docno"].astype(str)
 # Fill missing data to avoid merge crashes
 df2 = df2.fillna("No description available")
 
+def parse_flat_text_blob(text):
+    keys = [
+        'title', 'brand', 'description', 'finalprice', 'currency', 'availability',
+        'reviewscount', 'categories', 'buyboxseller', 'url', 'imageurl',
+        'rating', 'discount', 'topreview'
+    ]
+
+    result = {key: 'N/A' for key in keys}
+
+    # Split the text by known keys
+    for i, key in enumerate(keys):
+        pattern = f"{key}:"
+        try:
+            # Start from this key
+            start = text.index(pattern) + len(pattern)
+            # Look for the next key's position, or end of string
+            end = min([text.index(f"{k}:", start) for k in keys[i+1:] if f"{k}:" in text[start:]], default=len(text))
+            value = text[start:end].strip()
+            result[key] = value
+        except ValueError:
+            continue  # Key not found, skip
+
+    return pd.Series(result)
+
+parsed_df = df2["text"].apply(parse_flat_text_blob)
+df2 = pd.concat([df2, parsed_df], axis=1)
+
+
 # Add fake categories if missing
 if "category" not in df2.columns:
     categories = ['electronics', 'fashion', 'home', 'sports', 'images']
@@ -46,11 +74,12 @@ def enrich_results(results):
         results['text'] = 'No text available'
     if 'category' not in results.columns:
         results['category'] = 'Uncategorized'
-    if 'product_name' not in results.columns:
-        results['product_name'] = 'Unnamed Product'
+    if 'title' not in results.columns:
+        results['title'] = 'Unnamed Product'
+
 
     # Return the full document text instead of description
-    return results[['docno', 'text', 'rank', 'score', 'category', 'product_name']]
+    return results[['docno', 'text', 'rank', 'score', 'category', 'title', 'brand', 'description', 'finalprice', 'currency', 'availability', 'reviewscount', 'categories', 'buyboxseller', 'url', 'imageurl', 'rating', 'discount', 'topreview']]
 
 
 

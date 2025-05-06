@@ -33,12 +33,22 @@ function renderResults() {
     const card = document.createElement('div');
     card.className = 'result-card';
     card.innerHTML = `
-      <div class="result-info">
-        <h3>${item.docno} <span class="favorite-star" onclick="toggleFavorite(this, '${item.docno}')">★</span></h3>
-        <p>${highlightMatch(item.text, searchTerm)}</p>
-        <p class="url">Score: ${item.score.toFixed(2)}</p>
-        <p class="badge">${item.category || 'Uncategorized'}</p>
-      </div>
+    <div class="result-info">
+      <h3>${item.product_name} <span class="favorite-star" onclick="toggleFavorite(this, '${item.docno}')">★</span></h3>
+      <img src="${item.image_url}" alt="${item.product_name}" style="max-width: 120px; border-radius: 8px; margin: 10px 0;" />
+      <p><strong>Brand:</strong> ${item.brand}</p>
+      <p><strong>Description:</strong> ${highlightMatch(item.description, searchTerm)}</p>
+      <p><strong>Price:</strong> ${item.final_price} ${item.currency} ${item.discount ? `(-${item.discount}% off)` : ''}</p>
+      <p><strong>Availability:</strong> ${item.availability}</p>
+      <p><strong>Rating:</strong> ⭐ ${item.rating} (${item.reviews_count} reviews)</p>
+      <p><strong>Top Review:</strong> "${item.top_review}"</p>
+      <p><strong>Sold by:</strong> ${item.buybox_seller}</p>
+      <p><strong>Categories:</strong> ${item.categories}</p>
+      <p class="url"><a href="${item.url}" target="_blank">View on Amazon</a></p>
+      <p class="badge">${item.category || 'Uncategorized'}</p>
+      <p style="font-size: 13px; color: #81d4fa;">Score: ${item.score.toFixed(2)}</p>
+    </div>
+  
     `;
     results.appendChild(card);
   });
