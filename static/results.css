@@ -337,4 +337,10 @@
     background: var(--primary);
     color: #121212;
   }
+  mark {
+    background: yellow;
+    color: black;
+    padding: 0 2px;
+    border-radius: 3px;
+  }
   

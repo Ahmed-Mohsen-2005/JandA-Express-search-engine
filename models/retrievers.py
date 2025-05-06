@@ -42,15 +42,16 @@ index = pt.IndexFactory.of(index_ref)
 # --- Retrieval functions ---
 
 def enrich_results(results):
-    if 'description' not in results.columns:
-        results['description'] = 'No description available'
+    if 'text' not in results.columns:
+        results['text'] = 'No text available'
     if 'category' not in results.columns:
         results['category'] = 'Uncategorized'
     if 'product_name' not in results.columns:
         results['product_name'] = 'Unnamed Product'
 
-    # ✅ Return all the frontend needs:
-    return results[['docno', 'description',  'rank','score', 'category', 'product_name']]
+    # Return the full document text instead of description
+    return results[['docno', 'text', 'rank', 'score', 'category', 'product_name']]
+
 
 
 def search_tfidf(query):

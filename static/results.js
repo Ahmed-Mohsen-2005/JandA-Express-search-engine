@@ -13,6 +13,12 @@ async function loadResults(query) {
   }
 }
 
+function highlightMatch(text, query) {
+  const pattern = new RegExp(`(${query})`, 'gi');
+  return text.replace(pattern, '<mark>$1</mark>');
+}
+
+
 function renderResults() {
   const results = document.getElementById('results');
   const pagination = document.getElementById('pagination');
@@ -29,7 +35,7 @@ function renderResults() {
     card.innerHTML = `
       <div class="result-info">
         <h3>${item.docno} <span class="favorite-star" onclick="toggleFavorite(this, '${item.docno}')">★</span></h3>
-        <p>${item.description}</p>
+        <p>${highlightMatch(item.text, searchTerm)}</p>
         <p class="url">Score: ${item.score.toFixed(2)}</p>
         <p class="badge">${item.category || 'Uncategorized'}</p>
       </div>
