@@ -4,6 +4,10 @@ from gensim.models import Word2Vec
 import pandas as pd
 import os
 import random
+from flair.data import Sentence # represent a sentence
+from flair.embeddings import WordEmbeddings
+from termcolor import colored #add color to text output
+
 
 # Load both corpora
 df = pd.read_csv("our_corpus_preprocess.csv")
@@ -135,5 +139,19 @@ def search_word2vec_skipgram(query):
     results = retr.search(" OR ".join(similar_words)).merge(df2, on='docno')
     return enrich_results(results)
 
+def search_glove(query):
+    glove_embedding = WordEmbeddings('glove')
+    glove_sentence = Sentence(query)
+    glove_embedding.embed(glove_sentence)
+    glove_vector = glove_sentence.get_embedding().detach().numpy()
+    glove_vector = glove_vector.reshape(1, -1)
+    glove_vector = glove_vector.flatten()
+    glove_vector = glove_vector.tolist()
+    glove_vector = [str(x) for x in glove_vector]
+    glove_vector = " ".join(glove_vector)
+    retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
+    results = retr.search(glove_vector).merge(df2, on='docno')
+    return enrich_results(results)
+    
 
 
