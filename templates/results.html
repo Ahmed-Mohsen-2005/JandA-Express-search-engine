@@ -12,9 +12,26 @@
       <button onclick="goBack()" id="back-btn">⬅️ Back</button>
       <div class="logo">J&A Express</div>
     </div>
-    <input type="text" id="search-input" placeholder="Search products...">
+<div style="display: flex; flex: 1; align-items: center; gap: 10px; max-width: 2100px;">
+<input type="text" id="search-input" placeholder="Search products...">
+<select id="model-select"  class="dropdown-select">
+  <option value="tfidf">TfIDF</option>
+  <option value="bm25">BM25</option>
+  <option value="pl2">PL2</option>
+  <option value="unigram">Unigram</option>
+  <option value="word2vec-cbow">Word2Vec CBOW</option>
+  <option value="word2vec-skipgram">Word2Vec Skipgram</option>
+  <option value="glove">GloVE</option>
+  <option value="rnn">RNN</option>
+  <option value="lstm">LSTM</option>
+  <option value="elmo">ELMO</option>
+  <option value="bert">BERT</option>
+</select>
+</div>
+  <div style="display: flex; align-items: center; gap: 10px;">
     <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
     <button id="wishlist-toggle" onclick="showWishlist()">❤️</button>
+  </div>
   </header>
 
   <nav class="categories">

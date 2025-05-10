@@ -89,8 +89,15 @@ def search_bm25(query):
     results = retr.search(query).merge(df2, on='docno')
     return enrich_results(results)
 
+def search_pl2(query):
+    query = preprocessing(query)
+    retr = pt.BatchRetrieve(index, controls={"wmodel": "PL2"}, num_results=1000)
+    results = retr.search(query).merge(df2, on='docno')
+    return enrich_results(results)
+
 def search_unigram(query):
     query = preprocessing(query)
     retr = pt.BatchRetrieve(index, wmodel="Hiemstra_LM", num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
     return enrich_results(results)
+
