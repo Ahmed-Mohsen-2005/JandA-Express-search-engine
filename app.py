@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 from models.retrievers import search_tfidf, search_bm25, search_unigram, search_pl2, search_word2vec_cbow, search_word2vec_skipgram, search_glove,search_rnn
-app = Flask(_name_)
+app = Flask(__name__)
 
 @app.route("/")
 def interface():
