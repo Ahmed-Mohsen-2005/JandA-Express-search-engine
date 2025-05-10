@@ -264,26 +264,48 @@ function saveToHistory(query) {
 }
 
 // Update sidebar list
-function updateHistoryUI() {
+// Load history from localStorage when the page loads
+window.addEventListener('DOMContentLoaded', () => {
+    loadHistory();
+});
+
+function saveToHistory(query) {
+    let history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    history.unshift(query); // Add new query to the top
+    localStorage.setItem('searchHistory', JSON.stringify(history));
+    loadHistory();
+}
+
+function loadHistory() {
     const historyList = document.getElementById('history-list');
-    let history = JSON.parse(localStorage.getItem('searchHistory') || "[]");
-
-    historyList.innerHTML = history
-        .map(item => `<li onclick="reSearch('${item.replace(/'/g, "\\'")}')">${item}</li>`)
-        .join('');
+    historyList.innerHTML = '';
+    const history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    history.forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        li.onclick = () => {
+            document.getElementById('search-input').value = item;
+        };
+        historyList.appendChild(li);
+    });
 }
 
-// Trigger search from history
-function reSearch(query) {
-    document.getElementById('search-input').value = query;
-    handleSearch();
-}
-
-// Clear history
 function clearHistory() {
     localStorage.removeItem('searchHistory');
-    updateHistoryUI();
+    loadHistory();
 }
+
+// Hook into the form submission
+document.getElementById('search-form').addEventListener('submit', function(e) {
+    const query = document.getElementById('search-input').value.trim();
+    if (query) {
+        saveToHistory(query);
+    }
+});
+
+
+// Clear history
+
 
 // ========== ENHANCED SEARCH ==========
 
@@ -366,3 +388,7 @@ function redirectToResults() {
       window.location.href = `/results?q=${encodeURIComponent(query)}`;
     }
   }
+  document.getElementById('search-form').addEventListener('submit', function(event) {
+    const expandQuery = document.getElementById('expand-query').checked;
+    console.log('Query Expansion Enabled:', expandQuery);
+});

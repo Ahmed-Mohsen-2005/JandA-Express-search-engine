@@ -205,3 +205,9 @@ def search_rnn(query):
     results = retr.search(predicted_word).merge(df2, on='docno')
     
     return enrich_results(results)
+
+def expand_query_rm3(query, model="bm25"):
+    retr = pt.BatchRetrieve(index, wmodel=model)
+    rm3 = pt.rewrite.RM3(retr)
+    expanded_query = rm3.query([query]).iloc[0]["query"]
+    return expanded_query

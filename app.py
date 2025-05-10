@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from models.retrievers import search_tfidf, search_bm25, search_unigram, search_pl2, search_word2vec_cbow, search_word2vec_skipgram, search_glove,search_rnn
+from models.retrievers import search_tfidf, search_bm25, search_unigram, search_pl2, search_word2vec_cbow, search_word2vec_skipgram, search_glove,search_rnn, expand_query_rm3
 app = Flask(__name__)
 
 @app.route("/")
@@ -16,11 +16,15 @@ def results_page():
 def search():
     query = request.args.get("q")
     model = request.args.get("model", "tfidf") 
+    use_rm3 = request.args.get("rm3", "false").lower() == "true"
+
 
     if not query:
         return jsonify({"error": "Query is required"}), 400
 
     try:
+        if use_rm3 and model in ["bm25", "pl2"]:  
+            query = expand_query_rm3(query, model)
         if model == "tfidf":
             results = search_tfidf(query)
         elif model == "bm25":
