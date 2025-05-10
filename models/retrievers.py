@@ -18,16 +18,12 @@ df2 = df2.fillna("No description available")
 import re
 
 def parse_flat_text_blob(text):
-    fields = [
-        'title', 'brand', 'description', 'final_price', 'currency', 'availability',
-        'reviews_count', 'categories', 'buybox_seller', 'url', 'image_url',
-        'rating', 'discount', 'top_review'
-    ]
+    fields = ["product_name","brand", "description", "final_price", "currency", "categories", "url", "image_url", "rating", "discount", "top_review"]
     
     result = {key: 'N/A' for key in fields}
     
     # Use a regex pattern to safely extract each field's value
-    pattern = r'(\btitle|brand|description|final_price|currency|availability|reviews_count|categories|buybox_seller|url|image_url|rating|discount|top_review):\s*(.*?)(?=\s+\b(?:' + '|'.join(fields) + '):|$)'
+    pattern = r'(\\product_name|brand|description|final_price|currency|categories|url|image_url|rating|discount|top_review):\s*(.*?)(?=\s+\b(?:' + '|'.join(fields) + '):|$)'
     
     matches = re.findall(pattern, text, re.IGNORECASE)
     
@@ -81,8 +77,7 @@ def enrich_results(results):
 
     # Return the full document text instead of description
     return results[['docno', 'rank', 'score', 'category', 
-                    'title', 'brand', 'description', 'final_price', 'currency',
-                    'availability', 'reviews_count', 'categories', 'buybox_seller',
+                    'product_name', 'brand', 'description', 'final_price','currency', 'categories',
                     'url', 'image_url', 'rating', 'discount', 'top_review']]
 
 
