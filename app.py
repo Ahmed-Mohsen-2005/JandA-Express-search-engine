@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from models.retrievers import search_tfidf, search_bm25, search_unigram, search_pl2, search_word2vec_cbow, search_word2vec_skipgram, search_glove,search_rnn, expand_query_rm3
+from models.retrievers import search_tfidf, search_bm25, search_unigram, search_pl2, search_word2vec_cbow, search_word2vec_skipgram, search_glove,search_rnn,search_lstm, expand_query_rm3
 app = Flask(__name__)
 
 @app.route("/")
@@ -41,6 +41,8 @@ def search():
             results = search_glove(query)
         elif model == "rnn":
             results = search_rnn(query)
+        elif model == "lstm":
+            results = search_lstm(query)
         else:
             return jsonify({"error": "Invalid model"}), 400
 

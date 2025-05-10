@@ -11,6 +11,10 @@ from keras.models import Sequential
 from keras.layers import SimpleRNN, Dense
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Embedding
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
 # Load both corpora
@@ -206,8 +210,51 @@ def search_rnn(query):
     
     return enrich_results(results)
 
+
+def search_lstm(query):
+    tokenizer = Tokenizer()
+    corpus = df["text"].tolist()
+    tokenizer.fit_on_texts()
+    total_words = len(tokenizer.word_index) + 1 
+    input_sequences = []
+    for line in corpus:
+        token_list = tokenizer.texts_to_sequences([line])[0]
+        for i in range(1, len(token_list)):
+            n_gram_sequence = token_list[:i + 1]
+            input_sequences.append(n_gram_sequence)
+
+    max_sequence_length = max(len(x) for x in input_sequences)
+    input_sequences = pad_sequences(input_sequences, maxlen=max_sequence_length, padding='pre')
+    
+    X, y = input_sequences[:, :-1], input_sequences[:, -1]
+    y = np.array(y)
+
+    # Build the LSTM Model
+    model = Sequential()
+    model.add(Embedding(total_words, 50, input_length=max_sequence_length - 1))  # Embedding layer
+    model.add(LSTM(100))  
+    model.add(Dense(total_words, activation='softmax'))  
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+    model.fit(X, y, epochs=200, verbose=1)  
+    
+    query_tokens = re.findall(r"\w+", query.lower())
+    query_encoded = tokenizer.texts_to_sequences([query])[0]
+    query_sequence = pad_sequences([query_encoded], maxlen=max_sequence_length - 1, padding='pre')
+
+    predicted = model.predict(query_sequence, verbose=0)
+    predicted_word_index = np.argmax(predicted, axis=-1)[0]
+    predicted_word = tokenizer.index_word[predicted_word_index]
+
+    retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
+    results = retr.search(predicted_word).merge(df2, on='docno')
+
+    return enrich_results(results)
+
+
 def expand_query_rm3(query, model="bm25"):
     retr = pt.BatchRetrieve(index, wmodel=model)
     rm3 = pt.rewrite.RM3(retr)
     expanded_query = rm3.query([query]).iloc[0]["query"]
     return expanded_query
+
