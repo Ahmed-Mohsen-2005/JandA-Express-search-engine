@@ -1,5 +1,6 @@
 import pyterrier as pt
 from utils.preprocessing import preprocessing
+from gensim.models import Word2Vec
 import pandas as pd
 import os
 import random
@@ -62,14 +63,6 @@ index = pt.IndexFactory.of(index_ref)
 # --- Retrieval functions ---
 
 def enrich_results(results):
-    if 'text' not in results.columns:
-        results['text'] = 'No text available'
-    if 'category' not in results.columns:
-        results['category'] = 'Uncategorized'
-    if 'title' not in results.columns:
-        results['title'] = 'Unnamed Product'
-
-
     # Return the full document text instead of description
     return results[['docno', 'rank', 'score', 
                     'object', 'brand', 'description', 'final_price','currency', 'categories',
@@ -100,4 +93,47 @@ def search_unigram(query):
     retr = pt.BatchRetrieve(index, wmodel="Hiemstra_LM", num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
     return enrich_results(results)
+
+def search_word2vec_cbow(query):
+    query = preprocessing(query)
+    model = Word2Vec(
+    sentences=df["text"].apply(lambda x: x.split()).tolist(),
+    vector_size=10,
+    window=1,
+    min_count=1,
+    sg=0,  
+    epochs=100)
+    words = query.split()
+    vectors = [model.wv[word] for word in words if word in model.wv]
+    if not vectors:
+        return pd.DataFrame() 
+    avg_vector = sum(vectors) / len(vectors)
+    similar_words = model.wv.similar_by_vector(avg_vector, topn=10)
+    similar_words = [word for word, _ in similar_words]
+    retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
+    results = retr.search(" OR ".join(similar_words)).merge(df2, on='docno')
+    return enrich_results(results)
+
+def search_word2vec_skipgram(query):
+    query = preprocessing(query)
+    model = Word2Vec(
+    sentences=df["text"].apply(lambda x: x.split()).tolist(),
+    vector_size=100,
+    workers=4,
+    epochs=20,
+    window=2,
+    min_count=1,
+    sg=1)
+    words = query.split()
+    vectors = [model.wv[word] for word in words if word in model.wv]
+    if not vectors:
+        return pd.DataFrame() 
+    avg_vector = sum(vectors) / len(vectors)
+    similar_words = model.wv.similar_by_vector(avg_vector, topn=10)
+    similar_words = [word for word, _ in similar_words]
+    retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
+    results = retr.search(" OR ".join(similar_words)).merge(df2, on='docno')
+    return enrich_results(results)
+
+
 

@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from models.retrievers import search_tfidf, search_bm25, search_unigram, search_pl2
+from models.retrievers import search_tfidf, search_bm25, search_unigram, search_pl2, search_word2vec_cbow, search_word2vec_skipgram
 
 app = Flask(__name__)
 
@@ -30,6 +30,10 @@ def search():
             results = search_pl2(query)
         elif model == "unigram":
             results = search_unigram(query)
+        elif model == "word2vec-cbow":
+            results = search_word2vec_cbow(query)
+        elif model == "word2vec-skipgram":
+            results = search_word2vec_skipgram(query)
         else:
             return jsonify({"error": "Invalid model"}), 400
 
