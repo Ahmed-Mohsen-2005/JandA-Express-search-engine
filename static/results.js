@@ -53,7 +53,6 @@ function renderResults() {
       <p><strong>Top Review:</strong> "${item.top_review || 'N/A'}"</p>
       <p><strong>Categories:</strong> ${item.categories || 'N/A'}</p>
       <a href="${item.url || '#'}" target="_blank" style="color:#4fc3f7; text-decoration:underline;">View on Website</a>
-      <p class="badge">${item.categories || 'Uncategorized'}</p>
       <p class="url">Score: ${item.score?.toFixed(2) || '0.00'}</p>
     </div>
   `;

@@ -176,20 +176,6 @@ function toggleSlider() {
     sliderOpen = !sliderOpen;
 }
 // Real-time clock
-function updateClock() {
-    const clock = document.getElementById('clock');
-    const now = new Date();
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
-    let seconds = now.getSeconds();
-
-    // Add leading zero to minutes and seconds if less than 10
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    seconds = seconds < 10 ? '0' + seconds : seconds;
-
-    // Update clock every second
-    clock.innerHTML = `${hours}:${minutes}:${seconds}`;
-}
 
 // Fetch weather data from OpenWeatherMap
 function getWeather() {
@@ -238,15 +224,20 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateClock() {
     const clockElement = document.getElementById('clock');
     
-    setInterval(function() {
+    setInterval(() => {
         const now = new Date();
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
         
         clockElement.innerText = `${hours}:${minutes}:${seconds}`;
-    }, 1000);  // Update every second
+    }, 1000); // Update every second
 }
+
+// Start clock on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateClock();
+});
 // ========= HISTORY LOGIC ==========
 
 // Save query and update UI
