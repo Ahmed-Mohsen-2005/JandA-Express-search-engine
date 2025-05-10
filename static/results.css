@@ -97,9 +97,6 @@
     background: var(--card-bg);
   }
   
-  /* REMOVED any dark-mode hover overrides! Not needed anymore! */
-  
-  
   
   .result-card img {
     width: 70px;
@@ -366,3 +363,26 @@
   box-shadow: 0 0 5px rgba(136, 136, 136, 0.5);
 }
   
+body.light-mode {
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --card-bg: rgba(0, 0, 0, 0.05);
+  --input-bg: #f0f0f0;
+  --cat-bg: #e0e0e0;
+  --primary: #1976d2;
+  --loader-border: #ddd;
+}
+select {
+  background-color: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--text);
+  padding: 0.5em;
+  border-radius: 0.5em;
+  appearance: none; /* optional: custom style */
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary);
+}
