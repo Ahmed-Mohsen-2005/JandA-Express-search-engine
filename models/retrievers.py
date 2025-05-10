@@ -18,12 +18,12 @@ df2 = df2.fillna("No description available")
 import re
 
 def parse_flat_text_blob(text):
-    fields = ["product_name","brand", "description", "final_price", "currency", "categories", "url", "image_url", "rating", "discount", "top_review"]
+    fields = ["object","brand", "description", "final_price", "currency", "categories", "url", "image_url", "rating", "discount", "top_review"]
     
     result = {key: 'N/A' for key in fields}
     
     # Use a regex pattern to safely extract each field's value
-    pattern = r'(\\product_name|brand|description|final_price|currency|categories|url|image_url|rating|discount|top_review):\s*(.*?)(?=\s+\b(?:' + '|'.join(fields) + '):|$)'
+    pattern = r'(object|brand|description|final_price|currency|categories|url|image_url|rating|discount|top_review):\s*(.*?)(?=\s+\b(?:' + '|'.join(fields) + '):|$)'
     
     matches = re.findall(pattern, text, re.IGNORECASE)
     
@@ -39,11 +39,6 @@ parsed_df = df2["text"].apply(parse_flat_text_blob)
 df2 = pd.concat([df2, parsed_df], axis=1)
 
 
-
-# Add fake categories if missing
-if "category" not in df2.columns:
-    categories = ['electronics', 'fashion', 'home', 'sports', 'images']
-    df2["category"] = [random.choice(categories) for _ in range(len(df2))]
 
 # Initialize Terrier
 if not pt.started():
@@ -76,8 +71,8 @@ def enrich_results(results):
 
 
     # Return the full document text instead of description
-    return results[['docno', 'rank', 'score', 'category', 
-                    'product_name', 'brand', 'description', 'final_price','currency', 'categories',
+    return results[['docno', 'rank', 'score', 
+                    'object', 'brand', 'description', 'final_price','currency', 'categories',
                     'url', 'image_url', 'rating', 'discount', 'top_review']]
 
 

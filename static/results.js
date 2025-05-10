@@ -33,9 +33,9 @@ function renderResults() {
     const card = document.createElement('div');
     card.className = 'result-card';
     card.innerHTML = `
-    <img src="${item.image_url || ''}" alt="Product Image" style="width: 100px; height: 100px; border-radius: 12px; object-fit: cover;" />
+    <img src="${item.image_url || ''}" alt="Product Image" style="width: 300px; height: 300px; border-radius: 12px; object-fit: cover;" />
     <div class="result-info">
-      <h3>${item.product_name || 'Unnamed Product'}
+      <h3>${item.object || 'Unnamed Product'}
         <span class="favorite-star" onclick="toggleFavorite(this, '${item.docno}')">★</span>
       </h3>
       <p><strong>Brand:</strong> ${item.brand || 'N/A'}</p>
@@ -45,7 +45,7 @@ function renderResults() {
       <p><strong>Top Review:</strong> "${item.top_review || 'N/A'}"</p>
       <p><strong>Categories:</strong> ${item.categories || 'N/A'}</p>
       <a href="${item.url || '#'}" target="_blank" style="color:#4fc3f7; text-decoration:underline;">View on Amazon</a>
-      <p class="badge">${item.category || 'Uncategorized'}</p>
+      <p class="badge">${item.categories || 'Uncategorized'}</p>
       <p class="url">Score: ${item.score?.toFixed(2) || '0.00'}</p>
     </div>
   `;
@@ -89,14 +89,14 @@ function changePageSize() {
 function filterResults(category) {
   const filtered = category === 'all'
     ? resultsData
-    : resultsData.filter(item => item.category && item.category.toLowerCase() === category.toLowerCase());
+    : resultsData.filter(item => item.categories && item.categories.toLowerCase() === categories.toLowerCase());
   currentPage = 1;
   resultsData = filtered;
   renderResults();
 
   document.querySelectorAll('.categories button').forEach(btn => btn.classList.remove('active'));
   const activeBtn = Array.from(document.querySelectorAll('.categories button')).find(btn =>
-    btn.textContent.toLowerCase().includes(category.toLowerCase()));
+    btn.textContent.toLowerCase().includes(categories.toLowerCase()));
   if (activeBtn) activeBtn.classList.add('active');
 }
 
