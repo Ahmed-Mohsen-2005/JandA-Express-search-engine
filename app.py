@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from models.retrievers import search_tfidf, search_bm25, search_unigram
+from models.retrievers import search_tfidf, search_bm25, search_unigram, search_pl2
 
 app = Flask(__name__)
 
@@ -26,6 +26,8 @@ def search():
             results = search_tfidf(query)
         elif model == "bm25":
             results = search_bm25(query)
+        elif model == "pl2":
+            results = search_pl2(query)
         elif model == "unigram":
             results = search_unigram(query)
         else:
@@ -34,6 +36,7 @@ def search():
         return jsonify(results.to_dict(orient="records"))
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(debug=True)

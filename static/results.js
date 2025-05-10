@@ -4,7 +4,8 @@ let currentPage = 1;
 
 async function loadResults(query) {
   try {
-    const res = await fetch(`/search?q=${encodeURIComponent(query)}&model=tfidf`);
+    const selectedModel = document.getElementById('model-select').value;
+    const res = await fetch(`/search?q=${encodeURIComponent(query)}&model=${selectedModel}`);
     const data = await res.json();
     resultsData = data;
     renderResults();
@@ -12,6 +13,13 @@ async function loadResults(query) {
     document.getElementById('results').innerHTML = '<p style="color:red">Error fetching results.</p>';
   }
 }
+document.getElementById('model-select').addEventListener('change', () => {
+  const query = document.getElementById('search-input').value;
+  if (query.trim()) {
+    loadResults(query);
+  }
+});
+
 
 function highlightMatch(text, query) {
   const pattern = new RegExp(`(${query})`, 'gi');
