@@ -7,6 +7,10 @@ import random
 from flair.data import Sentence # represent a sentence
 from flair.embeddings import WordEmbeddings
 from termcolor import colored #add color to text output
+from keras.models import Sequential
+from keras.layers import SimpleRNN, Dense
+from sklearn.preprocessing import LabelEncoder
+import numpy as np
 
 
 # Load both corpora
@@ -154,6 +158,50 @@ def search_glove(query):
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(glove_vector).merge(df2, on='docno')
     return enrich_results(results)
+
+
+
+def search_rnn(query):
+    corpus = df["text"].tolist()
     
+    tokenized_corpus = [re.findall(r"\w+", doc.lower()) for doc in corpus]
+    all_words = [word for doc in tokenized_corpus for word in doc]
+    
+    le = LabelEncoder()
+    encoded_words = le.fit_transform(all_words)
+    
+    x = encoded_words[:-1]
+    y = encoded_words[1:]
+    
+    x = np.array(x).reshape((len(x), 1, 1))  
+    y = np.array(y)
+    
+    model = Sequential()
+    model.add(SimpleRNN(20, activation='relu', input_shape=(1, 1)))
+    model.add(Dense(1))
+    model.compile(optimizer='adam', loss='mean_squared_error')
+    model.fit(x, y, epochs=500, verbose=0) 
 
+    # 5. Convert the query to its encoded version
+    query_tokens = re.findall(r"\w+", query.lower())
+    query_encoded = [le.transform([token])[0] for token in query_tokens if token in le.classes_]
 
+    if not query_encoded:
+        return pd.DataFrame()  # No recognizable words
+
+    # 6. Predict the next value from the last token in query
+    test_input = np.array(query_encoded[-1]).reshape((1, 1, 1))
+    predicted = model.predict(test_input, verbose=0)
+    predicted_id = int(round(predicted[0][0]))
+
+    # 7. Try decoding the predicted token
+    if predicted_id >= len(le.classes_):
+        return pd.DataFrame()
+    
+    predicted_word = le.inverse_transform([predicted_id])[0]
+
+    # 8. Perform a search using the predicted word
+    retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
+    results = retr.search(predicted_word).merge(df2, on='docno')
+    
+    return enrich_results(results)
