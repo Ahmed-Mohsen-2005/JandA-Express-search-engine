@@ -44,7 +44,7 @@ function renderResults() {
     <img src="${item.image_url || ''}" alt="Product Image" style="width: 300px; height: 300px; border-radius: 12px; object-fit: cover;" />
     <div class="result-info">
       <h3>${item.object || 'Unnamed Product'}
-        <span class="favorite-star" onclick="toggleFavorite(this, '${item.docno}')">★</span>
+        <span class="favorite-star" onclick="toggleFavorite(this, '- ${item.object}')">★</span>
       </h3>
       <p><strong>Brand:</strong> ${item.brand || 'N/A'}</p>
       <p><strong>Description:</strong> ${item.description || 'N/A'}</p>
