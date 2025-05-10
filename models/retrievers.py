@@ -114,8 +114,9 @@ def search_word2vec_cbow(query):
     avg_vector = sum(vectors) / len(vectors)
     similar_words = model.wv.similar_by_vector(avg_vector, topn=10)
     similar_words = [word for word, _ in similar_words]
+    new_query = " OR ".join(similar_words)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
-    results = retr.search(" OR ".join(similar_words)).merge(df2, on='docno')
+    results = retr.search(new_query).merge(df2, on='docno')
     return enrich_results(results)
 
 def search_word2vec_skipgram(query):
@@ -135,8 +136,9 @@ def search_word2vec_skipgram(query):
     avg_vector = sum(vectors) / len(vectors)
     similar_words = model.wv.similar_by_vector(avg_vector, topn=10)
     similar_words = [word for word, _ in similar_words]
+    new_query = " OR ".join(similar_words)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
-    results = retr.search(" OR ".join(similar_words)).merge(df2, on='docno')
+    results = retr.search(new_query).merge(df2, on='docno')
     return enrich_results(results)
 
 def search_glove(query):

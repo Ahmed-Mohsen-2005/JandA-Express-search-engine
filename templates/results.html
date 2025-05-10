@@ -3,15 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>J&A Express - Advanced Search</title>
+  <title>J&A Express results</title>
   <link rel="stylesheet" href="/static/results.css">
+  <link rel="icon" href="static\JAExpress.png" type="image/png">
+
 </head>
 <body class="dark-mode">
   <header class="header">
     <div style="display: flex; align-items: center; gap: 10px;">
       <button onclick="goBack()" id="back-btn">⬅️ Back</button>
-      <div class="logo">J&A Express</div>
-    </div>
+<div class="logo" style="display: flex; align-items: center; gap: 8px;">
+        <img src="static\JAExpress.png" alt="Logo" style="height: 50px;">
+        <span>J&A Express</span>
+      </div>    </div>
 <div style="display: flex; flex: 1; align-items: center; gap: 10px; max-width: 2100px;">
 <input type="text" id="search-input" placeholder="Search products...">
 <select id="model-select"  class="dropdown-select">
