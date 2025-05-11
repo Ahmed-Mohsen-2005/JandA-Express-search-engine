@@ -18,15 +18,12 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
-# Load both corpora
 df = pd.read_csv("our_corpus_preprocess.csv")
 df2 = pd.read_csv("our_corpus_without_preprocess.csv")
 
-# Ensure 'docno' is string in both
 df["docno"] = df.index.astype(str)
 df2["docno"] = df2["docno"].astype(str)
 
-# Fill missing data to avoid merge crashes
 df2 = df2.fillna("No description available")
 
 import re
@@ -36,7 +33,6 @@ def parse_flat_text_blob(text):
     
     result = {key: 'N/A' for key in fields}
     
-    # Use a regex pattern to safely extract each field's value
     pattern = r'(object|brand|description|final_price|currency|categories|url|image_url|rating|discount|top_review):\s*(.*?)(?=\s+\b(?:' + '|'.join(fields) + '):|$)'
     
     matches = re.findall(pattern, text, re.IGNORECASE)
@@ -61,7 +57,6 @@ if not pt.started():
 index_path = os.path.abspath("corpus_index")
 os.makedirs(index_path, exist_ok=True)
 
-# Only index if it doesn't exist
 if not os.path.exists(os.path.join(index_path, "data.properties")):
     indexer = pt.IterDictIndexer(index_path, fields=["text"], meta=["docno"])
     print("Indexing documents...")
@@ -70,13 +65,10 @@ else:
     print("Index exists. Skipping indexing.")
     index_ref = index_path
 
-# Load the index
 index = pt.IndexFactory.of(index_ref)
 
-# --- Retrieval functions ---
 
 def enrich_results(results):
-    # Return the full document text instead of description
     return results[['docno', 'rank', 'score', 
                     'object', 'brand', 'description', 'final_price','currency', 'categories',
                     'url', 'image_url', 'rating', 'discount', 'top_review']]
@@ -88,10 +80,10 @@ def search_tfidf(query):
     query = preprocessing(query)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
-    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    retrieved_docs = results['docno'].tolist()  
     end_time = time.time()
     elapsed_time = end_time - start_time
-    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    # metrics = calculate_metrics(retrieved_docs, query)  
     return enrich_results(results), elapsed_time
 
 def search_bm25(query):
@@ -99,10 +91,10 @@ def search_bm25(query):
     query = preprocessing(query)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "BM25"}, num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
-    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    retrieved_docs = results['docno'].tolist()  
     end_time = time.time()
     elapsed_time = end_time - start_time
-    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    # metrics = calculate_metrics(retrieved_docs, query)  
     return enrich_results(results), elapsed_time
 
 def search_pl2(query):
@@ -110,10 +102,10 @@ def search_pl2(query):
     query = preprocessing(query)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "PL2"}, num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
-    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    retrieved_docs = results['docno'].tolist()
     end_time = time.time()
     elapsed_time = end_time - start_time
-    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    # metrics = calculate_metrics(retrieved_docs, query)  
     return enrich_results(results), elapsed_time
 
 def search_unigram(query):
@@ -121,10 +113,10 @@ def search_unigram(query):
     query = preprocessing(query)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "Hiemstra_LM"}, num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
-    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    retrieved_docs = results['docno'].tolist()
     end_time = time.time()
     elapsed_time = end_time - start_time
-    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    # metrics = calculate_metrics(retrieved_docs, query) 
     return enrich_results(results), elapsed_time
 
 def search_word2vec_cbow(query):
@@ -147,10 +139,10 @@ def search_word2vec_cbow(query):
     new_query = " OR ".join(similar_words)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(new_query).merge(df2, on='docno')
-    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    retrieved_docs = results['docno'].tolist() 
     end_time = time.time()
     elapsed_time = end_time - start_time
-    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    # metrics = calculate_metrics(retrieved_docs, query) 
     return enrich_results(results), elapsed_time
 
 def search_word2vec_skipgram(query):
@@ -174,25 +166,25 @@ def search_word2vec_skipgram(query):
     new_query = " OR ".join(similar_words)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(new_query).merge(df2, on='docno')
-    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    retrieved_docs = results['docno'].tolist() 
     end_time = time.time()
     elapsed_time = end_time - start_time
-    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    # metrics = calculate_metrics(retrieved_docs, query) 
     return enrich_results(results), elapsed_time
 
-def search_glove(query):
-    glove_embedding = WordEmbeddings('glove')
-    glove_sentence = Sentence(query)
-    glove_embedding.embed(glove_sentence)
-    glove_vector = glove_sentence.get_embedding().detach().numpy()
-    glove_vector = glove_vector.reshape(1, -1)
-    glove_vector = glove_vector.flatten()
-    glove_vector = glove_vector.tolist()
-    glove_vector = [str(x) for x in glove_vector]
-    glove_vector = " ".join(glove_vector)
-    retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
-    results = retr.search(glove_vector).merge(df2, on='docno')
-    return enrich_results(results)
+# def search_glove(query):
+#     glove_embedding = WordEmbeddings('glove')
+#     glove_sentence = Sentence(query)
+#     glove_embedding.embed(glove_sentence)
+#     glove_vector = glove_sentence.get_embedding().detach().numpy()
+#     glove_vector = glove_vector.reshape(1, -1)
+#     glove_vector = glove_vector.flatten()
+#     glove_vector = glove_vector.tolist()
+#     glove_vector = [str(x) for x in glove_vector]
+#     glove_vector = " ".join(glove_vector)
+#     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
+#     results = retr.search(glove_vector).merge(df2, on='docno')
+#     return enrich_results(results)
 
 
 
@@ -217,25 +209,21 @@ def search_rnn(query):
     model.compile(optimizer='adam', loss='mean_squared_error')
     model.fit(x, y, epochs=500, verbose=0) 
 
-    # 5. Convert the query to its encoded version
     query_tokens = re.findall(r"\w+", query.lower())
     query_encoded = [le.transform([token])[0] for token in query_tokens if token in le.classes_]
 
     if not query_encoded:
-        return pd.DataFrame()  # No recognizable words
+        return pd.DataFrame()  
 
-    # 6. Predict the next value from the last token in query
     test_input = np.array(query_encoded[-1]).reshape((1, 1, 1))
     predicted = model.predict(test_input, verbose=0)
     predicted_id = int(round(predicted[0][0]))
 
-    # 7. Try decoding the predicted token
     if predicted_id >= len(le.classes_):
         return pd.DataFrame()
     
     predicted_word = le.inverse_transform([predicted_id])[0]
 
-    # 8. Perform a search using the predicted word
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(predicted_word).merge(df2, on='docno')
     
@@ -260,7 +248,6 @@ def search_lstm(query):
     X, y = input_sequences[:, :-1], input_sequences[:, -1]
     y = np.array(y)
 
-    # Build the LSTM Model
     model = Sequential()
     model.add(Embedding(total_words, 50, input_length=max_sequence_length - 1))  # Embedding layer
     model.add(LSTM(100))  
@@ -293,23 +280,18 @@ def expand_query_rm3(query, model="bm25"):
 # def preprocess(text):
 #     return re.sub(r'\W', ' ', text.lower())
 
-# # Relevance Function - Checks if the query matches the document based on keyword overlap
 # def is_relevant(query, document, overlap_threshold=2):
 #     query_keywords = set(preprocess(query).split())
 #     document_text = preprocess(document)
     
-#     # Tokenize the document into words and check overlap
 #     document_keywords = set(document_text.split())
     
-#     # Calculate overlap between the query and the document
 #     overlap = query_keywords.intersection(document_keywords)
     
-#     # Consider the document relevant if the overlap exceeds a threshold
 #     if len(overlap) >= overlap_threshold:  
 #         return True
 #     return False
 
-# # General function to generate ground truth
 # def generate_ground_truth(query):
 #     ground_truth = {}
 

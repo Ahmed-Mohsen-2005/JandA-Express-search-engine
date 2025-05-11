@@ -25,7 +25,7 @@
   <option value="unigram">Unigram</option>
   <option value="word2vec-cbow">Word2Vec CBOW</option>
   <option value="word2vec-skipgram">Word2Vec Skipgram</option>
-  <option value="glove">GloVE</option>
+  {% comment %} <option value="glove">GloVE</option> {% endcomment %}
   <option value="rnn">RNN</option>
   <option value="lstm">LSTM</option>
   <option value="elmo">ELMO</option>
@@ -73,7 +73,7 @@
   </div>
 
   <script>
-    const searchTerm = "{{ query }}";  // passed from Flask template
+    const searchTerm = "{{ query }}"; 
     document.getElementById('search-input').value = searchTerm;
   </script>
   

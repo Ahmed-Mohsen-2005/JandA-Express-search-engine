@@ -175,7 +175,6 @@ body.dark-mode footer {
     border-top: 1px solid #ccc;
 }
 
-/* Open settings icon */
 #settings-icon {
     position: fixed;
     top: 20px;
@@ -192,7 +191,6 @@ body.dark-mode #settings-icon {
     background-color: #333;
     color: #fff;
 }
-/* Sidebar styles for dark mode */
 body.dark-mode #settings-slider {
     background-color: #1a1a1a;
     color: #ddd;
@@ -206,13 +204,11 @@ body.dark-mode #settings-slider label {
     color: #ddd;
 }
 
-/* Open settings icon */
 body.dark-mode #settings-icon {
     background-color: #333;
     color: #fff;
 }
 
-/* Search box and icons for dark mode */
 body.dark-mode .search-input-wrapper input {
     background-color: #333;
     color: #ddd;
@@ -233,13 +229,10 @@ body.dark-mode #search-button:hover {
     background-color: #555;
 }
 
-/* Safe Search toggle for dark mode */
 body.dark-mode #safe-search-toggle {
     color: #ddd;
 }
-/* Add these styles to your existing CSS */
 
-/* Top right widgets container */
 .top-right-widgets {
     position: fixed;
     top: 20px;
@@ -250,7 +243,6 @@ body.dark-mode #safe-search-toggle {
     z-index: 1000;
 }
 
-/* Styling for the clock */
 #clock {
     font-size: 18px;
     color: #333;
@@ -258,7 +250,6 @@ body.dark-mode #safe-search-toggle {
     display: inline-block;
 }
 
-/* Styling for the weather widget */
 #weather-widget {
     font-size: 16px;
     color: #333;
@@ -283,28 +274,26 @@ body.light-mode #weather-widget {
     color: #333;
 }
 
-/* Dark Mode */
 body.dark-mode #clock {
-    color: #fff;  /* White text in dark mode */
+    color: #fff;  
 }
 
 body.dark-mode #weather-widget {
-    color: #fff;  /* White text in dark mode */
+    color: #fff;  
 }
 
 body.dark-mode #weather-temp {
-    color: #fff;  /* White temperature text in dark mode */
+    color: #fff;  
 }
 
 body.dark-mode #weather-icon img {
-    filter: brightness(0) invert(1);  /* Lighten the weather icon for dark mode */
+    filter: brightness(0) invert(1);  
 }
-/* From Uiverse.io by andrew-demchenk0 */ 
 .button {
-    position: fixed; /* Make it fixed on the screen */
-    bottom: 10px;     /* Distance from the bottom */
-    left: 50%;        /* Center horizontally */
-    transform: translateX(-50%); /* Adjust for center alignment */
+    position: fixed; 
+    bottom: 10px;    
+    left: 50%;       
+    transform: translateX(-50%); 
     width: 150px;
     height: 40px;
     cursor: pointer;
@@ -313,7 +302,7 @@ body.dark-mode #weather-icon img {
     border: 1px solid #cc0000;
     background-color: #e50000;
     overflow: hidden;
-    z-index: 1000; /* Ensure it's above other elements */
+    z-index: 1000; 
 }
 
 .button, .button__icon, .button__text {
@@ -376,7 +365,7 @@ body.dark-mode #weather-icon img {
     background-color: #444;
 }
 #settings-slider .button {
-    position: absolute; /* relative to the slider */
+    position: absolute; 
     bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
@@ -392,7 +381,7 @@ body.dark-mode #weather-icon img {
 }
 
 #history-list {
-    max-height: 720px; /* Adjust as needed */
+    max-height: 720px; 
     overflow-y: auto;
     margin: 0;
     padding: 0;
@@ -403,9 +392,9 @@ body.dark-mode #weather-icon img {
     padding: 6px 12px;
     cursor: pointer;
     border-bottom: 1px solid #ccc;
-    white-space: nowrap;         /* Prevent text wrapping */
-    overflow: hidden;            /* Hide overflowed content */
-    text-overflow: ellipsis;     /* Add ... at the end if it overflows */
+    white-space: nowrap;         
+    overflow: hidden;           
+    text-overflow: ellipsis;    
 }
 
 .dark-mode #history-list li:hover {
@@ -448,7 +437,6 @@ body.dark-mode #weather-icon img {
     overflow: visible;
   }
   
-  /* Thinner, wispy smoke puffs */
   .smoke-puff {
     position: absolute;
     border-radius: 50% / 60%;
@@ -465,7 +453,6 @@ body.dark-mode #weather-icon img {
     100% { transform: scale(2.5, 1.2) translateY(-100px); opacity: 0; }
   }
   
-  /* Longer, blurred motion streaks */
   .speed-line {
     position: absolute;
     width: 120px;

@@ -6,7 +6,7 @@
     --input-bg: #2a2a2a;
     --cat-bg: #181818;
     --loader-border: #1f1f1f;
-    --card-bg: rgba(255, 255, 255, 0.05); /* dark mode */
+    --card-bg: rgba(255, 255, 255, 0.05); 
   }
 
   
@@ -55,7 +55,7 @@
   
   .categories button {
   background: var(--input-bg);
-  border: 1px solid var(--light-border, #ccc); /* 🔥 Soft border */
+  border: 1px solid var(--light-border, #ccc); 
   color: var(--text);
   padding: 10px 20px;
   border-radius: 20px;
@@ -93,7 +93,7 @@
   
   .result-card:hover {
     transform: translateY(-12px);
-    box-shadow: 0 12px 30px rgba(79, 195, 247, 0.3); /* 🔥 BLUE GLOW EVERYWHERE */
+    box-shadow: 0 12px 30px rgba(79, 195, 247, 0.3); 
     background: var(--card-bg);
   }
   
@@ -120,10 +120,10 @@
   
   /* Custom font style for the score */
 .result-info .url {
-  font-family: 'YourPreferredFont', sans-serif;  /* Replace with your preferred font */
-  font-size: 16px;  /* Adjust the font size if needed */
-  font-weight: bold;  /* Optionally make it bold */
-  color: #0c94d3;  /* Keep or change the color as needed */
+  font-family: 'YourPreferredFont', sans-serif;  
+  font-size: 16px;  
+  font-weight: bold;  
+  color: #0c94d3; 
 }
 
   .badge {
@@ -363,7 +363,6 @@
   --primary: #1976d2;
   --loader-border: #ddd;
 }
-/* Default dropdown styles */
 .dropdown-select {
   background-color: #222;
   color: #f1f1f1;
@@ -375,14 +374,12 @@
   cursor: pointer;
 }
 
-/* Light Mode specific dropdown styling */
 body.light-mode .dropdown-select {
   background-color: #f9f9f9;
   color: #1a1a1a;
   border: 1px solid #888;
 }
 
-/* Focused dropdown styles */
 .dropdown-select:focus {
   outline: none;
   border-color: #888;
@@ -405,8 +402,7 @@ select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 2px var(--primary);
 }
-/* Styling for the search time container */
-/* Base styling for both light and dark modes */
+
 #speed-container {
   margin-top: 20px;
   padding: 12px 20px;
@@ -416,13 +412,12 @@ select:focus {
   align-items: center;
   font-size: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition for background color and text */
+  transition: background-color 0.3s, color 0.3s; 
 }
 
-/* Light Mode */
 body.light-mode #speed-container {
-  background-color: #f1f1f1; /* Light background for light mode */
-  color: #333; /* Dark text color for better contrast */
+  background-color: #f1f1f1; 
+  color: #333; 
 }
 
 body.light-mode #speed-container p {
@@ -431,13 +426,12 @@ body.light-mode #speed-container p {
 
 body.light-mode #speed-container span {
   font-weight: normal;
-  color: #007bff; /* Blue text for contrast */
+  color: #007bff;
 }
 
-/* Dark Mode */
 body.dark-mode #speed-container {
-  background-color: #333; /* Dark background for dark mode */
-  color: #fff; /* Light text color for readability */
+  background-color: #333; 
+  color: #fff; 
 }
 
 body.dark-mode #speed-container p {
@@ -446,10 +440,9 @@ body.dark-mode #speed-container p {
 
 body.dark-mode #speed-container span {
   font-weight: normal;
-  color: #4fc3f7; /* Soft blue for text in dark mode */
+  color: #4fc3f7; 
 }
 
-/* Additional optional styling to improve the look */
 #speed-container p {
   margin: 0;
 }

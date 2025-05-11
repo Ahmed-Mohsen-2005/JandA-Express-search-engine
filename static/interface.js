@@ -46,13 +46,13 @@ function toggleTheme() {
         body.classList.add('dark-mode');
         icon.classList.remove('fa-moon');
         icon.classList.add('fa-sun');
-        slider.classList.add('dark-mode');  // Ensure the slider changes with dark mode
+        slider.classList.add('dark-mode'); 
     } else {
         body.classList.remove('dark-mode');
         body.classList.add('light-mode');
         icon.classList.remove('fa-sun');
         icon.classList.add('fa-moon');
-        slider.classList.remove('dark-mode'); // Remove dark mode from the slider
+        slider.classList.remove('dark-mode'); 
     }
 }
 window.onload = function () {
@@ -61,37 +61,30 @@ window.onload = function () {
     const statusDiv = document.getElementById('listening-status');
     let silenceTimeout;
 
-    // Start mic on icon click
     micIcon.addEventListener('click', () => {
         if (!window.annyang) {
             alert('Voice recognition not supported.');
             return;
         }
 
-        // Reset any previous state
         annyang.abort();
         annyang.removeCommands();
         annyang.removeCallback();
 
-        // UI ON
         micIcon.classList.add('listening');
         statusDiv.style.display = 'block';
 
-        // Live update from speech
         annyang.addCallback('result', function (phrases) {
             const phrase = phrases[0];
             searchInput.value = phrase;
 
-            // Reset silence timer
             if (silenceTimeout) clearTimeout(silenceTimeout);
             silenceTimeout = setTimeout(() => {
-                annyang.abort();         // Stop listening
-                handleSearch();          // Do the search
-                // DON'T hide UI here; wait for 'end'
+                annyang.abort();        
+                handleSearch();          
             }, 5000);
         });
 
-        // UI OFF only after mic stops
         annyang.addCallback('end', () => {
             micIcon.classList.remove('listening');
             statusDiv.style.display = 'none';
@@ -100,10 +93,8 @@ window.onload = function () {
         annyang.start({ autoRestart: false, continuous: true });
     });
 
-    // Search icon click
     document.querySelector('.fa-search').addEventListener('click', handleSearch);
 
-    // Camera icon
     function handleImageFile(file) {
         const maxSizeMB = 5;
         const fileSizeMB = file.size / (1024 * 1024);
@@ -127,7 +118,6 @@ window.onload = function () {
         reader.readAsDataURL(file);
     }
     
-    // 📷 Camera icon click
     document.querySelector('.fa-camera').addEventListener('click', () => {
         const input = document.createElement('input');
         input.type = 'file';
@@ -141,7 +131,6 @@ window.onload = function () {
         };
     });
     
-    // 🖱️ Drag & Drop
     const dropZone = document.getElementById('drop-zone');
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -175,49 +164,40 @@ function toggleSlider() {
     }
     sliderOpen = !sliderOpen;
 }
-// Real-time clock
 
-// Fetch weather data from OpenWeatherMap
 function getWeather() {
-    const apiKey = '8f2eada28366f5ad2a4295a1dec62b14';  // Replace with your actual API key
-    const city = 'Cairo';  // Example city (you can replace with your own)
+    const apiKey = '8f2eada28366f5ad2a4295a1dec62b14';  
+    const city = 'Cairo';  
     const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
-    // Log the URL to ensure the correct API call is being made
     console.log("Fetching weather data from:", weatherUrl);
 
     // Start fetching the weather data
     fetch(weatherUrl)
         .then(response => {
-            // Check if the response is successful (status 200)
             if (!response.ok) {
                 throw new Error(`Failed to fetch weather data: ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
-            // Check if we got the data and log it
             console.log("Weather data:", data);
 
             const temp = data.main.temp;
             const iconCode = data.weather[0].icon;
             const weatherIcon = `https://openweathermap.org/img/wn/${iconCode}.png`;
 
-            // Update the weather widget with temperature and icon
             document.getElementById('weather-temp').innerText = `${temp}°C`;
             document.getElementById('weather-icon').innerHTML = `<img src="${weatherIcon}" alt="Weather icon" />`;
         })
         .catch(error => {
-            // Log the error in the console for debugging
             console.error("Error fetching weather:", error);
 
-            // Show a friendly message on the page
             document.getElementById('weather-temp').innerText = 'Unable to fetch weather';
             document.getElementById('weather-icon').innerHTML = '';
         });
 }
 
-// Call getWeather when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     getWeather();
 });
@@ -231,22 +211,18 @@ function updateClock() {
         const seconds = String(now.getSeconds()).padStart(2, '0');
         
         clockElement.innerText = `${hours}:${minutes}:${seconds}`;
-    }, 1000); // Update every second
+    }, 1000); 
 }
 
-// Start clock on page load
 document.addEventListener('DOMContentLoaded', () => {
     updateClock();
 });
-// ========= HISTORY LOGIC ==========
 
-// Save query and update UI
 function saveToHistory(query) {
     if (!query.trim()) return;
 
     let history = JSON.parse(localStorage.getItem('searchHistory') || "[]");
 
-    // Avoid duplicates (case-insensitive)
     if (!history.some(item => item.toLowerCase() === query.toLowerCase())) {
         history.unshift(query); 
         localStorage.setItem('searchHistory', JSON.stringify(history.slice(0, 100))); // Limit to 10 items
@@ -254,15 +230,14 @@ function saveToHistory(query) {
     }
 }
 
-// Update sidebar list
-// Load history from localStorage when the page loads
+
 window.addEventListener('DOMContentLoaded', () => {
     loadHistory();
 });
 
 function saveToHistory(query) {
     let history = JSON.parse(localStorage.getItem('searchHistory')) || [];
-    history.unshift(query); // Add new query to the top
+    history.unshift(query); 
     localStorage.setItem('searchHistory', JSON.stringify(history));
     loadHistory();
 }
@@ -286,7 +261,6 @@ function clearHistory() {
     loadHistory();
 }
 
-// Hook into the form submission
 document.getElementById('search-form').addEventListener('submit', function(e) {
     const query = document.getElementById('search-input').value.trim();
     if (query) {
@@ -294,11 +268,6 @@ document.getElementById('search-form').addEventListener('submit', function(e) {
     }
 });
 
-
-// Clear history
-
-
-// ========== ENHANCED SEARCH ==========
 
 function handleSearch() {
     const query = document.getElementById('search-input').value.trim();
@@ -309,7 +278,7 @@ function handleSearch() {
         return;
     }
 
-    saveToHistory(query); // Save it!
+    saveToHistory(query);
 
     const results = [
         `Result 1 for "${query}"`,
@@ -322,7 +291,6 @@ function handleSearch() {
     ).join('');
 }
 
-// Load history on page load
 document.addEventListener('DOMContentLoaded', () => {
     updateHistoryUI();
     getWeather();
@@ -350,7 +318,6 @@ const run = setInterval(() => {
     smokeContainer.appendChild(puff);
   }
 
-  // Create speed streaks
   for (let i = 0; i < 3; i++) {
     const line = document.createElement('div');
     line.classList.add('speed-line');
@@ -359,7 +326,6 @@ const run = setInterval(() => {
     smokeContainer.appendChild(line);
   }
 
-  // Stop when Sonic reaches the edge
   const sonicWidth = sonic.offsetWidth;
   if (pos + sonicWidth >= window.innerWidth) {
     clearInterval(run);
@@ -367,10 +333,9 @@ const run = setInterval(() => {
     // Fade out
     sonic.style.opacity = 0;
 
-    // After fade-out ends, remove Sonic (optional)
     setTimeout(() => {
       sonic.style.display = 'none';
-    }, 800); // Match this with your CSS transition time
+    }, 800); 
   }
 }, interval);
 function redirectToResults() {
