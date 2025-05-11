@@ -26,17 +26,17 @@ def search():
         if use_rm3 and model in ["bm25", "pl2"]:  
             query = expand_query_rm3(query, model)
         if model == "tfidf":
-            results = search_tfidf(query)
+            results, time = search_tfidf(query)
         elif model == "bm25":
-            results = search_bm25(query)
+            results, time = search_bm25(query)
         elif model == "pl2":
-            results = search_pl2(query)
+            results, time = search_pl2(query)
         elif model == "unigram":
-            results = search_unigram(query)
+            results, time = search_unigram(query)
         elif model == "word2vec-cbow":
-            results = search_word2vec_cbow(query)
+            results, time = search_word2vec_cbow(query)
         elif model == "word2vec-skipgram":
-            results = search_word2vec_skipgram(query)
+            results, time = search_word2vec_skipgram(query)
         elif model == "glove":
             results = search_glove(query)
         elif model == "rnn":
@@ -46,7 +46,8 @@ def search():
         else:
             return jsonify({"error": "Invalid model"}), 400
 
-        return jsonify(results.to_dict(orient="records"))
+        return jsonify({"results":results.to_dict(orient="records"), 
+                       "search_time":time})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

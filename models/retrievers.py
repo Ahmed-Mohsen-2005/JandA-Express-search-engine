@@ -3,6 +3,7 @@ from utils.preprocessing import preprocessing
 from gensim.models import Word2Vec
 import pandas as pd
 import os
+import time
 import random
 from flair.data import Sentence # represent a sentence
 from flair.embeddings import WordEmbeddings
@@ -83,30 +84,51 @@ def enrich_results(results):
 
 
 def search_tfidf(query):
+    start_time = time.time()
     query = preprocessing(query)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
-    return enrich_results(results)
+    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    return enrich_results(results), elapsed_time
 
 def search_bm25(query):
+    start_time = time.time()
     query = preprocessing(query)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "BM25"}, num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
-    return enrich_results(results)
+    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    return enrich_results(results), elapsed_time
 
 def search_pl2(query):
+    start_time = time.time()
     query = preprocessing(query)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "PL2"}, num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
-    return enrich_results(results)
+    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    return enrich_results(results), elapsed_time
 
 def search_unigram(query):
+    start_time = time.time()
     query = preprocessing(query)
-    retr = pt.BatchRetrieve(index, wmodel="Hiemstra_LM", num_results=1000)
+    retr = pt.BatchRetrieve(index, controls={"wmodel": "Hiemstra_LM"}, num_results=1000)
     results = retr.search(query).merge(df2, on='docno')
-    return enrich_results(results)
+    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    return enrich_results(results), elapsed_time
 
 def search_word2vec_cbow(query):
+    start_time = time.time()
     query = preprocessing(query)
     model = Word2Vec(
     sentences=df["text"].apply(lambda x: x.split()).tolist(),
@@ -125,9 +147,14 @@ def search_word2vec_cbow(query):
     new_query = " OR ".join(similar_words)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(new_query).merge(df2, on='docno')
-    return enrich_results(results)
+    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    return enrich_results(results), elapsed_time
 
 def search_word2vec_skipgram(query):
+    start_time = time.time()
     query = preprocessing(query)
     model = Word2Vec(
     sentences=df["text"].apply(lambda x: x.split()).tolist(),
@@ -147,7 +174,11 @@ def search_word2vec_skipgram(query):
     new_query = " OR ".join(similar_words)
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(new_query).merge(df2, on='docno')
-    return enrich_results(results)
+    retrieved_docs = results['docno'].tolist()  # Assuming docno is the identifier
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    # metrics = calculate_metrics(retrieved_docs, query)  # Calculate metrics based on ground truth
+    return enrich_results(results), elapsed_time
 
 def search_glove(query):
     glove_embedding = WordEmbeddings('glove')
@@ -258,3 +289,65 @@ def expand_query_rm3(query, model="bm25"):
     expanded_query = rm3.query([query]).iloc[0]["query"]
     return expanded_query
 
+
+# def preprocess(text):
+#     return re.sub(r'\W', ' ', text.lower())
+
+# # Relevance Function - Checks if the query matches the document based on keyword overlap
+# def is_relevant(query, document, overlap_threshold=2):
+#     query_keywords = set(preprocess(query).split())
+#     document_text = preprocess(document)
+    
+#     # Tokenize the document into words and check overlap
+#     document_keywords = set(document_text.split())
+    
+#     # Calculate overlap between the query and the document
+#     overlap = query_keywords.intersection(document_keywords)
+    
+#     # Consider the document relevant if the overlap exceeds a threshold
+#     if len(overlap) >= overlap_threshold:  
+#         return True
+#     return False
+
+# # General function to generate ground truth
+# def generate_ground_truth(query):
+#     ground_truth = {}
+
+#     # Iterate through each query
+#     relevant_docs = []
+        
+#         # Iterate through each document in the dataset
+#     for _, row in df.iterrows():
+#         doc_id = row['docno']
+            
+#             # Check relevance in any of the given fields
+#         for field in ['text']:
+#             if field in row and is_relevant(query, row[field], 1):
+#                 relevant_docs.append(doc_id)
+#                 break  # Stop once we find one relevant field for the document
+        
+#         # Store the relevant documents for the query
+#     ground_truth[query] = relevant_docs
+    
+#     return ground_truth
+
+# def calculate_metrics(retrieved_docs, query):
+#     # Get the relevant documents for the current query
+#     relevant_docs = generate_ground_truth(query).get(query, [])
+    
+#     if not relevant_docs:
+#         return {'precision': 0, 'recall': 0, 'f1_score': 0}  # No relevant documents available
+    
+#     # Calculate Precision, Recall, and F1-Score
+#     retrieved_set = set(retrieved_docs)
+#     relevant_set = set(relevant_docs)
+    
+#     true_positives = len(retrieved_set & relevant_set)
+#     false_positives = len(retrieved_set - relevant_set)
+#     false_negatives = len(relevant_set - retrieved_set)
+    
+#     precision = true_positives / (true_positives + false_positives) if true_positives + false_positives > 0 else 0
+#     recall = true_positives / (true_positives + false_negatives) if true_positives + false_negatives > 0 else 0
+#     f1 = 2 * (precision * recall) / (precision + recall) if precision + recall > 0 else 0
+    
+#     return {'precision': precision, 'recall': recall, 'f1_score': f1}

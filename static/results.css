@@ -405,3 +405,57 @@ select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 2px var(--primary);
 }
+/* Styling for the search time container */
+/* Base styling for both light and dark modes */
+#speed-container {
+  margin-top: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for background color and text */
+}
+
+/* Light Mode */
+body.light-mode #speed-container {
+  background-color: #f1f1f1; /* Light background for light mode */
+  color: #333; /* Dark text color for better contrast */
+}
+
+body.light-mode #speed-container p {
+  font-weight: bold;
+}
+
+body.light-mode #speed-container span {
+  font-weight: normal;
+  color: #007bff; /* Blue text for contrast */
+}
+
+/* Dark Mode */
+body.dark-mode #speed-container {
+  background-color: #333; /* Dark background for dark mode */
+  color: #fff; /* Light text color for readability */
+}
+
+body.dark-mode #speed-container p {
+  font-weight: bold;
+}
+
+body.dark-mode #speed-container span {
+  font-weight: normal;
+  color: #4fc3f7; /* Soft blue for text in dark mode */
+}
+
+/* Additional optional styling to improve the look */
+#speed-container p {
+  margin: 0;
+}
+
+#speed-container span {
+  font-weight: normal;
+  color: inherit;
+}
+
