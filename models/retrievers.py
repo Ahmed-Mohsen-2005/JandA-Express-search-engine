@@ -16,6 +16,13 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Embedding
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+import tensorflow as tf
+import tensorflow_hub as hub
+from transformers import BertTokenizer, BertModel
+import torch
+from sklearn.metrics.pairwise import cosine_similarity
+
+elmo = hub.load("https://tfhub.dev/google/elmo/3")
 
 
 df = pd.read_csv("our_corpus_preprocess.csv")
@@ -276,6 +283,46 @@ def expand_query_rm3(query, model="bm25"):
     expanded_query = rm3.query([query]).iloc[0]["query"]
     return expanded_query
 
+def get_elmo_embedding(text):
+    inputs = tf.constant([text])
+    embeddings = elmo.signatures["default"](inputs)["elmo"]
+    return embeddings.numpy()[0][0]
+
+def cosine_similarity_custom(v1, v2):
+    dot_product = np.dot(v1, v2)
+    norm_v1 = np.linalg.norm(v1)
+    norm_v2 = np.linalg.norm(v2)
+    return dot_product / (norm_v1 * norm_v2)
+
+def expand_query_with_elmo(query, relevant_docs):
+    combined_text = " ".join(relevant_docs)
+    query_embedding = get_elmo_embedding(query)
+    combined_embedding = get_elmo_embedding(combined_text)
+    similarity_score = cosine_similarity_custom(query_embedding, combined_embedding)
+    if similarity_score < 0.5:
+        expanded_query = query + " " + combined_text
+        return expanded_query
+    else:
+        return query
+    
+
+
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+model = BertModel.from_pretrained('bert-base-uncased')
+
+def get_bert_embedding(text):
+    inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True)
+    with torch.no_grad():
+        outputs = model(**inputs)
+    cls_embedding = outputs.last_hidden_state[:, 0, :]
+    return cls_embedding
+
+def search_bert(query, top_n=3):
+    query_embedding = get_bert_embedding(query)
+    document_embeddings = [get_bert_embedding(doc) for doc in df["text"]]
+    similarities = [cosine_similarity(query_embedding, doc_emb).item() for doc_emb in document_embeddings]
+    ranked_docs = sorted(zip(similarities, df["text"]), reverse=True, key=lambda x: x[0])
+    return ranked_docs[:top_n]
 
 # def preprocess(text):
 #     return re.sub(r'\W', ' ', text.lower())
