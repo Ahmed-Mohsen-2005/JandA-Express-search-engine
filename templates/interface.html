@@ -44,24 +44,34 @@
             </div>
             <br>
             <div id="drop-zone">
-                📥 Drag & drop an image here or click the 📷 icon
+                <p id="image-upload-instruction"> 📥 Drag & drop an image here or click the 📷 icon </p>
             </div>
             <div id="results"></div>
         </center>
     </div>
 
     <footer>
-        <p>Powered by J&A Search Engine</p>
-        &copy; 2025 J&A Search Engine. All rights reserved.
+        <p id="powered-by">Powered by J&A Search Engine</p>
+        <p id="copyright">&copy; 2025 J&A Search Engine. All rights reserved.</p>
     </footer>
 
     <div id="settings-slider">
         <br><br><br>
-        <h3>Settings</h3>
+        <h3 id="settings-label">Settings</h3>
+        <fieldset id="language-selector" style="margin-top: 20px;">
+      <legend id="language-leg"><strong>🌐 Choose language:</strong></legend>
+<label><input type="radio" name="language" value="en"> English</label><br>
+  <label><input type="radio" name="language" value="ar"> العربية</label><br>
+  <label><input type="radio" name="language" value="fr"> Français</label><br>
+  <label><input type="radio" name="language" value="de"> Deutsch</label><br>
+  <label><input type="radio" name="language" value="zh"> 中文</label>
+    </fieldset>
+
+    <button class="button" onclick="saveLanguage()">Save Language</button>
         <button id="open-assistant">🤖 Assistant</button>
         <div id="assistant-slider">
             <div class="header">
-            <h2>AI Assistant</h2>
+            <h2 id="ai-assistant-label">AI Assistant</h2>
         <button class="bin-button" id="clear-chat-button">
         <svg
             class="bin-top"
@@ -121,16 +131,16 @@
                 </svg>
                 </div>
             </div>
-            <span>Send</span>
+            <span id="send-assis">Send</span>
             </button>
             </form>
         </div>
         <div class="history-section">
-            <h4>History</h4>
+            <h4 id="history-label">History</h4>
             <ul id="history-list"></ul>
         </div>
-        <button class="button" type="button" onclick="clearHistory()" id="clearhist">
-            <span class="button__text">Delete History</span>
+        <button class="button" type="button" onclick="clearHistory()">
+            <span class="button__text" id="clearhist">Clear History</span>
             <span class="button__icon"><svg class="svg" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path><line style="stroke:#fff;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" x1="80" x2="432" y1="112" y2="112"></line><path d="M192,112V72h0a23.93,23.93,0,0,1,24-24h80a23.93,23.93,0,0,1,24,24h0v40" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="256" x2="256" y1="176" y2="400"></line><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="184" x2="192" y1="176" y2="400"></line><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="328" x2="320" y1="176" y2="400"></line></svg></span>
         </button>
     </div>

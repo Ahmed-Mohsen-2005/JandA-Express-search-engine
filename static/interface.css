@@ -642,7 +642,7 @@ body.dark-mode #open-assistant {
   background: royalblue;
   color: white;
   padding: 0.7em 1em;
-  padding-left: 0.9em;
+  padding-left: 0.4em;
   display: flex;
   align-items: center;
   border: none;
@@ -650,6 +650,7 @@ body.dark-mode #open-assistant {
   overflow: hidden;
   transition: all 0.2s;
   cursor: pointer;
+  min-width: 115px;
 }
 
 #send-chatbot span {

@@ -382,3 +382,149 @@ document.getElementById('clear-chat-button').addEventListener('click', function(
     // Clear the chat box
     document.getElementById('chat-box').innerHTML = '';
 });
+const translations = {
+  en: {
+    searchPlaceholder: 'Search something...',
+    searchButton: 'Search',
+    clearHistory: 'Clear History',
+    assistant: 'Assistant',
+    languageLabel: 'Language',
+    imageInstruction: '📥 Drag & drop an image here or click the 📷 icon',
+    poweredBy: 'Powered by J&A Search Engine',
+    copyright: '© 2025 J&A Search Engine. All rights reserved.',
+    assistantMessagePlaceholder: 'Ask me anything...',
+    aiAssistantLabel: 'AI Assistant',
+    chooseLanguage: 'Choose Language',
+    history: 'History',
+    settings: 'Settings',
+    send: 'Send'
+  },
+  ar: {
+    searchPlaceholder: 'ابحث عن شيء...',
+    searchButton: 'بحث',
+    clearHistory: 'مسح السجل',
+    assistant: 'المساعد',
+    languageLabel: 'اللغة',
+    imageInstruction: '📥 اسحب وأفلت صورة هنا أو انقر على أيقونة 📷',
+    poweredBy: 'بدعم من محرك البحث J&A',
+    copyright: '© 2025 محرك البحث J&A. جميع الحقوق محفوظة.',    
+    assistantMessagePlaceholder: 'اسألني أي شيء...',
+    aiAssistantLabel: 'المساعد الذكي',
+    chooseLanguage: 'اختر اللغة',
+    history: 'السجل',
+    settings: 'الإعدادات',
+    send: 'إرسال'
+  },
+  fr: {
+    searchPlaceholder: 'Recherchez quelque chose...',
+    searchButton: 'Rechercher',
+    clearHistory: 'Effacer l’historique',
+    assistant: 'Assistant',
+    languageLabel: 'Langue',
+    imageInstruction: '📥 Glissez-déposez une image ici ou cliquez sur l’icône 📷',
+    poweredBy: 'Propulsé par le moteur de recherche J&A',
+    copyright: '© 2025 Moteur de recherche J&A. Tous droits réservés.',
+    assistantMessagePlaceholder: 'Demandez-moi n’importe quoi...',
+    aiAssistantLabel: 'Assistant IA',
+    chooseLanguage: 'Choisir la langue',
+    history: 'Historique',
+    settings: 'Paramètres',
+    send: 'Envoyer'
+  },
+  de: {
+    searchPlaceholder: 'Suche etwas...',
+    searchButton: 'Suchen',
+    clearHistory: 'Verlauf löschen',
+    assistant: 'Assistent',
+    languageLabel: 'Sprache',
+    imageInstruction: '📥 Ziehen Sie ein Bild hierher oder klicken Sie auf das 📷 Symbol',
+    poweredBy: 'Bereitgestellt von J&A Suchmaschine',
+    copyright: '© 2025 J&A Suchmaschine. Alle Rechte vorbehalten.',
+    assistantMessagePlaceholder: 'Frag mich etwas...',
+    aiAssistantLabel: 'KI-Assistent',
+    chooseLanguage: 'Sprache wählen',
+    history: 'Verlauf',
+    settings: 'Einstellungen',
+    send: 'Senden'
+  },
+  zh: {
+    searchPlaceholder: '搜索内容...',
+    searchButton: '搜索',
+    clearHistory: '清除历史',
+    assistant: '助手',
+    languageLabel: '语言',
+    imageInstruction: '📥 拖放图像或点击 📷 图标',
+    poweredBy: '由 J&A 搜索引擎提供支持',
+    copyright: '© 2025 J&A 搜索引擎。保留所有权利。',
+    assistantMessagePlaceholder: '问我任何问题...',
+    aiAssistantLabel: 'AI 助手',
+    chooseLanguage: '选择语言',
+    history: '历史',
+    settings: '设置',
+    send: '发送'
+  }
+};
+
+function applyLanguage(lang) {
+  const t = translations[lang] || translations.en;
+
+  // Update placeholder for search input
+  document.getElementById('search-input').placeholder = t.searchPlaceholder;
+
+  // Update the search button
+  const searchBtn = document.querySelector('search-button');
+  if (searchBtn) {
+    searchBtn.title = t.searchButton;  // This sets the title attribute (tooltip)
+  }
+
+  // AI Assistant label
+document.getElementById('ai-assistant-label').innerText = translations[lang].aiAssistantLabel;
+
+  // Update the 'clear history' button
+
+  
+document.getElementById('send-assis').innerText = translations[lang].send;
+document.getElementById('clearhist').innerText = translations[lang].clearHistory;
+
+  // Update assistant label/button
+  const assistantLabel = document.getElementById('open-assistant');
+  if (assistantLabel) assistantLabel.textContent = t.assistant;
+
+  // Update the image upload instruction text
+  const imageInstruction = document.getElementById('image-upload-instruction');
+  if (imageInstruction) imageInstruction.textContent = t.imageInstruction;
+
+  document.getElementById('user-input').placeholder = t.assistantMessagePlaceholder;
+
+document.getElementById('language-leg').innerText = translations[lang].chooseLanguage;
+document.getElementById('history-label').innerText = translations[lang].history;
+document.getElementById('settings-label').innerText = translations[lang].settings;
+
+  // Update powered by text
+  const poweredBy = document.getElementById('powered-by');
+  if (poweredBy) poweredBy.textContent = t.poweredBy;
+
+  // Update copyright text
+  const copyright = document.getElementById('copyright');
+  if (copyright) copyright.textContent = t.copyright;
+
+  // If there are other buttons, you can target and translate them as well, for example:
+  const searchButton = document.getElementById('search-button');
+  if (searchButton) {
+    searchButton.textContent = t.searchButton;
+  }
+}
+
+// Ensure language change is properly saved
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+  document.querySelector(`input[name="language"][value="${savedLang}"]`).checked = true;
+  applyLanguage(savedLang);
+
+  document.querySelectorAll('input[name="language"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      localStorage.setItem('preferredLanguage', radio.value);
+      applyLanguage(radio.value);
+    });
+  });
+});
