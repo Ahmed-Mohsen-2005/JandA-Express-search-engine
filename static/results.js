@@ -8,7 +8,8 @@ async function loadResults(query) {
     const res = await fetch(`/search?q=${encodeURIComponent(query)}&model=${selectedModel}`);
     const data = await res.json();
     resultsData = data.results;
-    displaySpeed(data.search_time);
+    const numresults = resultsData.length;
+    displaySpeed(data.search_time, numresults);
     renderResults();
   } catch (err) {
     document.getElementById('results').innerHTML = '<p style="color:red">Error fetching results.</p>';
@@ -166,9 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
   updateWishlistUI();
 });
 
-function displaySpeed(searchTime) {
+function displaySpeed(searchTime, numresults) {
   const speedContainer = document.getElementById('speed-container');
   speedContainer.innerHTML = `
-    <p><strong>Search Time:</strong> ${searchTime.toFixed(4)} seconds</p>
+    <p><strong>Search Time:</strong> ${searchTime.toFixed(4)} seconds for ${numresults} results</p>
   `;
 }

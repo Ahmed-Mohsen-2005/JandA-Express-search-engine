@@ -409,6 +409,8 @@ select:focus {
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
+  background-color: #ffffff; 
+  color: #000000; 
   align-items: center;
   font-size: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
