@@ -348,3 +348,37 @@ function redirectToResults() {
     const expandQuery = document.getElementById('expand-query').checked;
     console.log('Query Expansion Enabled:', expandQuery);
 });
+document.getElementById('open-assistant').addEventListener('click', () => {
+  document.getElementById('assistant-slider').classList.add('open');
+});
+
+document.getElementById('close-assistant').addEventListener('click', () => {
+  document.getElementById('assistant-slider').classList.remove('open');
+});
+
+document.getElementById('chat-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('user-input');
+  const chatBox = document.getElementById('chat-box');
+  const userMessage = input.value.trim();
+
+  if (!userMessage) return;
+
+  chatBox.innerHTML += `<div><strong>You:</strong> ${userMessage}</div>`;
+  input.value = '';
+
+  const response = await fetch('/ask', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: userMessage })
+  });
+
+  const data = await response.json();
+  chatBox.innerHTML += `<div><strong>AI:</strong> ${data.reply}</div>`;
+  chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+document.getElementById('clear-chat-button').addEventListener('click', function() {
+    // Clear the chat box
+    document.getElementById('chat-box').innerHTML = '';
+});

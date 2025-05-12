@@ -58,15 +58,84 @@
     <div id="settings-slider">
         <br><br><br>
         <h3>Settings</h3>
+        <button id="open-assistant">🤖 Assistant</button>
+        <div id="assistant-slider">
+            <div class="header">
+            <h2>AI Assistant</h2>
+        <button class="bin-button" id="clear-chat-button">
+        <svg
+            class="bin-top"
+            viewBox="0 0 39 7"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
+            <line
+            x1="12"
+            y1="1.5"
+            x2="26.0357"
+            y2="1.5"
+            stroke="white"
+            stroke-width="3"
+            ></line>
+        </svg>
+        <svg
+            class="bin-bottom"
+            viewBox="0 0 33 39"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <mask id="path-1-inside-1_8_19" fill="white">
+            <path
+                d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"
+            ></path>
+            </mask>
+            <path
+            d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"
+            fill="white"
+            mask="url(#path-1-inside-1_8_19)"
+            ></path>
+            <path d="M12 6L12 29" stroke="white" stroke-width="4"></path>
+            <path d="M21 6V29" stroke="white" stroke-width="4"></path>
+        </svg>
+        </button>
+
+            <button id="close-assistant">×</button>
+            </div>
+            <div class="chat-box" id="chat-box"></div>
+            <form id="chat-form">
+            <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off">
+            <button>
+            <div class="svg-wrapper-1">
+                <div class="svg-wrapper">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                >
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                    fill="currentColor"
+                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                    ></path>
+                </svg>
+                </div>
+            </div>
+            <span>Send</span>
+            </button>
+            </form>
+        </div>
         <div class="history-section">
             <h4>History</h4>
             <ul id="history-list"></ul>
         </div>
-        <button class="button" type="button" onclick="clearHistory()">
+        <button class="button" type="button" onclick="clearHistory()" id="clearhist">
             <span class="button__text">Delete History</span>
             <span class="button__icon"><svg class="svg" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><title></title><path d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path><line style="stroke:#fff;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" x1="80" x2="432" y1="112" y2="112"></line><path d="M192,112V72h0a23.93,23.93,0,0,1,24-24h80a23.93,23.93,0,0,1,24,24h0v40" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></path><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="256" x2="256" y1="176" y2="400"></line><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="184" x2="192" y1="176" y2="400"></line><line style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" x1="328" x2="320" y1="176" y2="400"></line></svg></span>
         </button>
     </div>
+    
 
     <div id="settings-icon" onclick="toggleSlider()">
         <i class="fas fa-cogs"></i>

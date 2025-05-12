@@ -289,7 +289,7 @@ body.dark-mode #weather-temp {
 body.dark-mode #weather-icon img {
     filter: brightness(0) invert(1);  
 }
-.button {
+#clearhist {
     position: fixed; 
     bottom: 10px;    
     left: 50%;       
@@ -303,19 +303,21 @@ body.dark-mode #weather-icon img {
     background-color: #e50000;
     overflow: hidden;
     z-index: 1000; 
-}
-
-.button, .button__icon, .button__text {
     transition: all 0.3s;
 }
 
-.button .button__text {
+#clearhist .button__icon,
+#clearhist .button__text {
+    transition: all 0.3s;
+}
+
+#clearhist .button__text {
     transform: translateX(5px);
     color: #fff;
     font-weight: 600;
 }
 
-.button .button__icon {
+#clearhist .button__icon {
     position: absolute;
     transform: translateX(109px);
     height: 100%;
@@ -326,28 +328,28 @@ body.dark-mode #weather-icon img {
     justify-content: center;
 }
 
-.button .svg {
+#clearhist .svg {
     width: 20px;
 }
 
-.button:hover {
+#clearhist:hover {
     background: #cc0000;
 }
 
-.button:hover .button__text {
+#clearhist:hover .button__text {
     color: transparent;
 }
 
-.button:hover .button__icon {
+#clearhist:hover .button__icon {
     width: 148px;
     transform: translateX(0);
 }
 
-.button:active .button__icon {
+#clearhist:active .button__icon {
     background-color: #b20000;
 }
 
-.button:active {
+#clearhist:active {
     border: 1px solid #b20000;
 }
 
@@ -499,4 +501,215 @@ body.dark-mode #weather-icon img {
 }
 .query-expansion input[type="checkbox"] {
     transform: scale(1.2);
+}
+#open-assistant {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+#assistant-slider {
+  position: fixed;
+  right: -380px;
+  top: 0;
+  height: 100%;
+  width: 380px;
+  background: white;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+  transition: right 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+#assistant-slider.open {
+  right: 0;
+}
+
+.header {
+  padding: 16px;
+  background: #007bff;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-box {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+#chat-form {
+  display: flex;
+  padding: 15px;
+  background-color: #fff;
+  border-top: 2px solid #f1f1f1;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#user-input {
+  flex: 1;
+  padding: 12px 18px;
+  border: 2px solid #007bff;
+  border-radius: 50px;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+#user-input:focus {
+  border-color: #28a745;
+}
+
+#close-assistant {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+#close-assistant:hover {
+  transform: rotate(90deg);
+}
+
+.chat-box {
+  flex: 1;
+  padding: 20px;
+  background: #f4f7fa;
+  overflow-y: auto;
+  font-size: 16px;
+  color: #333;
+}
+
+.chat-box div {
+  margin-bottom: 15px;
+}
+
+.chat-box div strong {
+  color: #007bff;
+}
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.chat-box div {
+  animation: slideIn 0.5s ease-out;
+}
+
+#chat-box {
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 768px) {
+  #assistant-slider {
+    width: 100%;
+  }
+
+  #open-assistant {
+    right: 10px;
+    bottom: 10px;
+    font-size: 18px;
+  }
+}
+
+
+button {
+  font-family: inherit;
+  font-size: 20px;
+  background: royalblue;
+  color: white;
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+button span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+}
+
+button svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+button:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+button:hover svg {
+  transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+button:hover span {
+  transform: translateX(5em);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+/* From Uiverse.io by vinodjangid07 */ 
+.bin-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  border-radius: 15px;
+  background-color: rgb(255, 95, 95);
+  cursor: pointer;
+  border: 3px solid rgb(255, 201, 201);
+  transition-duration: 0.3s;
+}
+.bin-bottom {
+  width: 15px;
+}
+.bin-top {
+  width: 17px;
+  transform-origin: right;
+  transition-duration: 0.3s;
+}
+.bin-button:hover .bin-top {
+  transform: rotate(45deg);
+}
+.bin-button:hover {
+  background-color: rgb(255, 0, 0);
+}
+.bin-button:active {
+  transform: scale(0.9);
 }
