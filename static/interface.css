@@ -46,11 +46,15 @@ body {
     border-radius: 25px;
     font-size: 16px;
     box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    cursor:text;
+    
 }
 .search-input-wrapper {
     position: relative;
-    width: 50%;
-    margin: 0 auto;
+    width: 60%;
+    margin: 20px auto;
+    padding:0;
+    cursor:text;
 }
 @keyframes pulse {
     0% { transform: scale(1); opacity: 1; }
@@ -289,7 +293,7 @@ body.dark-mode #weather-temp {
 body.dark-mode #weather-icon img {
     filter: brightness(0) invert(1);  
 }
-#clearhist {
+.button {
     position: fixed; 
     bottom: 10px;    
     left: 50%;       
@@ -303,21 +307,19 @@ body.dark-mode #weather-icon img {
     background-color: #e50000;
     overflow: hidden;
     z-index: 1000; 
+}
+
+.button, .button__icon, .button__text {
     transition: all 0.3s;
 }
 
-#clearhist .button__icon,
-#clearhist .button__text {
-    transition: all 0.3s;
-}
-
-#clearhist .button__text {
+.button .button__text {
     transform: translateX(5px);
     color: #fff;
     font-weight: 600;
 }
 
-#clearhist .button__icon {
+.button .button__icon {
     position: absolute;
     transform: translateX(109px);
     height: 100%;
@@ -328,28 +330,28 @@ body.dark-mode #weather-icon img {
     justify-content: center;
 }
 
-#clearhist .svg {
+.button .svg {
     width: 20px;
 }
 
-#clearhist:hover {
+.button:hover {
     background: #cc0000;
 }
 
-#clearhist:hover .button__text {
+.button:hover .button__text {
     color: transparent;
 }
 
-#clearhist:hover .button__icon {
+.button:hover .button__icon {
     width: 148px;
     transform: translateX(0);
 }
 
-#clearhist:active .button__icon {
+.button:active .button__icon {
     background-color: #b20000;
 }
 
-#clearhist:active {
+.button:active {
     border: 1px solid #b20000;
 }
 
@@ -514,6 +516,11 @@ body.dark-mode #weather-icon img {
   cursor: pointer;
 }
 
+
+body.dark-mode #open-assistant {
+  background: #3c3f43;
+  color: #f0f0f0;
+}
 #assistant-slider {
   position: fixed;
   right: -380px;
@@ -557,7 +564,7 @@ body.dark-mode #weather-icon img {
 #user-input {
   flex: 1;
   padding: 12px 18px;
-  border: 2px solid #007bff;
+  border: 2px solid #0573bc;
   border-radius: 50px;
   font-size: 16px;
   outline: none;
@@ -565,7 +572,7 @@ body.dark-mode #weather-icon img {
 }
 
 #user-input:focus {
-  border-color: #28a745;
+  border-color: #0a32e4;
 }
 
 #close-assistant {
@@ -629,7 +636,7 @@ body.dark-mode #weather-icon img {
 }
 
 
-button {
+#send-chatbot {
   font-family: inherit;
   font-size: 20px;
   background: royalblue;
@@ -645,31 +652,31 @@ button {
   cursor: pointer;
 }
 
-button span {
+#send-chatbot span {
   display: block;
   margin-left: 0.3em;
   transition: all 0.3s ease-in-out;
 }
 
-button svg {
+#send-chatbot svg {
   display: block;
   transform-origin: center center;
   transition: transform 0.3s ease-in-out;
 }
 
-button:hover .svg-wrapper {
+#send-chatbot:hover .svg-wrapper {
   animation: fly-1 0.6s ease-in-out infinite alternate;
 }
 
-button:hover svg {
+#send-chatbot:hover svg {
   transform: translateX(1.2em) rotate(45deg) scale(1.1);
 }
 
-button:hover span {
+#send-chatbot:hover span {
   transform: translateX(5em);
 }
 
-button:active {
+#send-chatbot:active {
   transform: scale(0.95);
 }
 
@@ -712,4 +719,43 @@ button:active {
 }
 .bin-button:active {
   transform: scale(0.9);
+}
+
+
+body.dark-mode #assistant-slider {
+  background: #1e1e2f;
+  color: #f1f1f1;
+}
+
+body.dark-mode .header {
+  background: #2a2a3b;
+  color: #ffffff;
+}
+
+body.dark-mode #chat-form {
+  background-color: #2a2a3b;
+  border-top: 2px solid #333;
+}
+
+body.dark-mode #user-input {
+  background: #1e1e2f;
+  border-color: #2b72f6;
+  color: #f1f1f1;
+}
+
+body.dark-mode #user-input:focus {
+  border-color: #17c964;
+}
+
+body.dark-mode .chat-box {
+  background: #12121c;
+  color: #f1f1f1;
+}
+
+body.dark-mode .chat-box div strong {
+  color: #1e90ff;
+}
+
+body.dark-mode #close-assistant {
+  color: #ffffff;
 }
