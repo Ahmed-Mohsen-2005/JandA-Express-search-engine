@@ -415,7 +415,10 @@ select:focus {
   font-size: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, color 0.3s; 
-}
+  width:90%;
+  margin-left: auto;
+  margin-right: auto;
+  }
 
 body.light-mode #speed-container {
   background-color: #f1f1f1; 

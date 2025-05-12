@@ -385,7 +385,7 @@ body.dark-mode #weather-icon img {
 }
 
 #history-list {
-    max-height: 720px; 
+    max-height: 550px; 
     overflow-y: auto;
     margin: 0;
     padding: 0;
