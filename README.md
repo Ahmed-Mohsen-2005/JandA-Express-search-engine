@@ -1,5 +1,4 @@
 # Mining-search-engine
-# Mining-search-engine
 
 Mining-search-engine is a multilingual, web-based search engine built with Flask. It supports advanced information retrieval models and provides a user-friendly interface for searching and exploring a custom document corpus.
 
@@ -12,10 +11,16 @@ Mining-search-engine is a multilingual, web-based search engine built with Flask
   Optional RM3-based query expansion for improved search relevance (works with BM25 and PL2).
 
 - **Multilingual Interface:**  
-  User interface supports English, French, German, and Arabic.
+  User interface supports English, French, German, Chinese, and Arabic.
 
 - **Image Support:**  
   Allows users to upload or drag-and-drop images for enhanced search experiences.
+
+- **Voice Search:**  
+  Users can search using their voice for a hands-free experience.
+
+- **AI Assistant:**  
+  Integrated AI assistant to help users with search queries, suggestions, and navigation.
 
 - **Favorites & History:**  
   Users can mark favorite results and view their search history.
@@ -39,9 +44,7 @@ Mining-search-engine is a multilingual, web-based search engine built with Flask
 1. **Install dependencies:**
    pip install -r requirements.txt
 
-2. Run the application:
-
-python app.py
+2. Run the application: python app.py
 
 3. Access the interface:
 Open http://localhost:5000 in your browser.
