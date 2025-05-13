@@ -51,6 +51,6 @@ Open http://localhost:5000 in your browser.
 
 
 ## Usage: 
-Enter a search query, select a retrieval model, and (optionally) enable RM3 query expansion.
-Browse, favorite, and explore results.
-Switch interface language as needed.
+- Enter a search query, select a retrieval model, and (optionally) enable RM3 query expansion.
+- Browse, favorite, and explore results.
+- Switch interface language as needed.
