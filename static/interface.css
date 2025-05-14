@@ -78,8 +78,8 @@ body {
 }
 .input-icons {
     position: absolute;
-    top: 49.5%;
-    right: 415px;
+    top: 60%;
+    right: -20px;
     transform: translateY(-50%);
     display: flex;
     gap: 10px;
