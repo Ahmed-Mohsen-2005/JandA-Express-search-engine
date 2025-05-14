@@ -760,3 +760,29 @@ body.dark-mode .chat-box div strong {
 body.dark-mode #close-assistant {
   color: #ffffff;
 }
+#autocomplete-box {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-top: none;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+
+    .suggestion {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .suggestion:hover {
+      background-color: #f0f0f0;
+    }
+    .search-container {
+      position: relative;
+      width: 300px;
+    }

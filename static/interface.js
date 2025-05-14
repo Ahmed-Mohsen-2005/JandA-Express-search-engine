@@ -528,3 +528,52 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+const suggestions = [
+      "AI development",
+      "AI image tools",
+      "AI in healthcare",
+      "AI bias mitigation",
+      "AI project ideas",
+      "AI regulation",
+      "AI for good",
+      "AI research papers"
+    ];
+
+    const input = document.getElementById('search-input');
+    const box = document.getElementById('autocomplete-box');
+
+    function showSuggestions(query = '') {
+      const matched = suggestions
+        .filter(item => item.toLowerCase().includes(query.toLowerCase()))
+        .slice(0, 5);
+
+      if (matched.length === 0) {
+        box.style.display = 'none';
+        return;
+      }
+
+      box.innerHTML = matched.map(s => `<div class="suggestion">${s}</div>`).join('');
+      box.style.display = 'block';
+    }
+
+    input.addEventListener('input', () => {
+      const query = input.value.trim();
+      showSuggestions(query);
+    });
+
+    input.addEventListener('focus', () => {
+      showSuggestions(input.value.trim());
+    });
+
+    box.addEventListener('click', (e) => {
+      if (e.target.classList.contains('suggestion')) {
+        input.value = e.target.textContent;
+        box.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!box.contains(e.target) && e.target !== input) {
+        box.style.display = 'none';
+      }
+    });
