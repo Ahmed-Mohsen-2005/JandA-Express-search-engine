@@ -70,6 +70,8 @@ function renderResults() {
     prev.onclick = () => {
       currentPage--;
       renderResults();
+      window.scrollTo(0, 0); // Scroll to top
+
     };
     pagination.appendChild(prev);
   }
@@ -84,6 +86,7 @@ function renderResults() {
     next.onclick = () => {
       currentPage++;
       renderResults();
+      window.scrollTo(0, 0); // Scroll to top
     };
     pagination.appendChild(next);
   }
@@ -117,9 +120,21 @@ function toggleTheme() {
   renderResults();
 }
 
-function scrollTopSmooth() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+const backToTopButton = document.getElementById('back-to-top');
+
+  // Show/hide button on scroll
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backToTopButton.style.display = 'block';
+    } else {
+      backToTopButton.style.display = 'none';
+    }
+  });
+
+  // Scroll to top smoothly when clicked
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
 function goBack() {
   window.history.back();

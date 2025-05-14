@@ -173,23 +173,26 @@
     color: #121212;
   }
   
-  #back-to-top {
-    display: none;
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background: var(--primary);
-    color: #121212;
-    font-size: 24px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s;
-    z-index: 99;
-  }
+#back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 50%; /* Makes it circular */
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease;
+  text-align: center;
+  line-height: 60px; /* Vertically center the icon/text */
+}
+
   
   #back-to-top:hover {
     transform: scale(1.15);
