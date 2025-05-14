@@ -176,6 +176,7 @@ def search_word2vec_skipgram(query):
 
 
 def search_rnn(query):
+    start_time = time.time()
     corpus = df["text"].tolist()
     
     tokenized_corpus = [re.findall(r"\w+", doc.lower()) for doc in corpus]
@@ -213,11 +214,13 @@ def search_rnn(query):
 
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(predicted_word).merge(df2, on='docno')
-    
-    return enrich_results(results)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    return enrich_results(results), elapsed_time
 
 
 def search_lstm(query):
+    start_time = time.time()
     tokenizer = Tokenizer()
     corpus = df["text"].tolist()
     tokenizer.fit_on_texts()
@@ -253,8 +256,9 @@ def search_lstm(query):
 
     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
     results = retr.search(predicted_word).merge(df2, on='docno')
-
-    return enrich_results(results)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    return enrich_results(results), elapsed_time
 
 def expand_query_rm3(query, model="BM25"):
     retr = pt.BatchRetrieve(index_ref, wmodel=model)
