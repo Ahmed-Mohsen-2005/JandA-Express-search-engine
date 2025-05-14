@@ -145,7 +145,8 @@ function toggleTheme() {
         reader.onload = function (e) {
             const imgPreview = `<img src="${e.target.result}" alt="Image Preview" style="max-width:200px; border-radius:10px; margin-bottom:10px;">`;
             const fileInfo = `<p><strong>File:</strong> ${file.name}<br><strong>Size:</strong> ${fileSizeMB.toFixed(2)} MB</p>`;
-            searchInput.value = `Image: ${file.name}`;
+            const fileNameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+            searchInput.value = `${fileNameWithoutExt}`;
             resultsDiv.innerHTML = imgPreview + fileInfo;
     
         };

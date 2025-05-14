@@ -1,7 +1,36 @@
 from flask import Flask, request, jsonify, render_template
 from openai import OpenAI
+from PIL import Image
+import pytesseract
 from models.retrievers import search_tfidf, search_bm25, search_unigram, search_pl2, search_word2vec_cbow, search_word2vec_skipgram,search_rnn,search_lstm, expand_query_rm3, search_bert
 app = Flask(__name__)
+
+
+@app.route("/search_by_image", methods=["POST"])
+def search_by_image():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image uploaded"}), 400
+    
+    image_file = request.files['image']
+
+    try:
+        image = Image.open(image_file.stream)
+
+        extracted_query = pytesseract.image_to_string(image).strip()
+
+        if not extracted_query:
+            return jsonify({"error": "No readable text found in the image"}), 400
+
+        results, time = search_bm25(extracted_query) 
+
+        return jsonify({
+            "query": extracted_query,
+            "results": results.to_dict(orient="records"),
+            "search_time": time
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/")
 def interface():
