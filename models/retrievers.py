@@ -16,8 +16,8 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Embedding
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-
-
+from utils.bert import get_embedding
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 df = pd.read_csv("our_corpus_preprocess.csv")
@@ -174,21 +174,6 @@ def search_word2vec_skipgram(query):
     # metrics = calculate_metrics(retrieved_docs, query) 
     return enrich_results(results), elapsed_time
 
-# def search_glove(query):
-#     glove_embedding = WordEmbeddings('glove')
-#     glove_sentence = Sentence(query)
-#     glove_embedding.embed(glove_sentence)
-#     glove_vector = glove_sentence.get_embedding().detach().numpy()
-#     glove_vector = glove_vector.reshape(1, -1)
-#     glove_vector = glove_vector.flatten()
-#     glove_vector = glove_vector.tolist()
-#     glove_vector = [str(x) for x in glove_vector]
-#     glove_vector = " ".join(glove_vector)
-#     retr = pt.BatchRetrieve(index, controls={"wmodel": "TF_IDF"}, num_results=1000)
-#     results = retr.search(glove_vector).merge(df2, on='docno')
-#     return enrich_results(results)
-
-
 
 def search_rnn(query):
     corpus = df["text"].tolist()
@@ -279,7 +264,28 @@ def expand_query_rm3(query, model="BM25"):
     expanded_query = result_df.iloc[0]["query"]
     return expanded_query
 
+def search_bert(query):
+    start_time = time.time()
+    
+    query_embedding = get_embedding(query).unsqueeze(0)  
 
+    doc_embeddings = []
+    for doc in df["text"]:
+        emb = get_embedding(doc)
+        doc_embeddings.append(emb.numpy())
+
+    doc_embeddings = np.stack(doc_embeddings)  
+
+    similarities = cosine_similarity(query_embedding.numpy(), doc_embeddings)[0]
+
+    df_with_scores = df2.copy()
+    df_with_scores["score"] = similarities
+    results = df_with_scores.sort_values(by="score", ascending=False).head(1000)
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    
+    return enrich_results(results), elapsed_time
 # def preprocess(text):
 #     return re.sub(r'\W', ' ', text.lower())
 
