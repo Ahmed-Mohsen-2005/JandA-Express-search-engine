@@ -271,11 +271,12 @@ def search_lstm(query):
 
     return enrich_results(results)
 
-
-def expand_query_rm3(query, model="bm25"):
-    retr = pt.BatchRetrieve(index, wmodel=model)
-    rm3 = pt.rewrite.RM3(retr)
-    expanded_query = rm3.query([query]).iloc[0]["query"]
+def expand_query_rm3(query, model="BM25"):
+    retr = pt.BatchRetrieve(index_ref, wmodel=model)
+    pipeline = retr >> pt.rewrite.RM3(index_ref)
+    query_df = pd.DataFrame([{"qid": "1", "query": query}])
+    result_df = pipeline.transform(query_df)
+    expanded_query = result_df.iloc[0]["query"]
     return expanded_query
 
 

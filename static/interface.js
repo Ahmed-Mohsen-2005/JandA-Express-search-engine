@@ -55,46 +55,80 @@ function toggleTheme() {
         slider.classList.remove('dark-mode'); 
     }
 }
-window.onload = function () {
-    const searchInput = document.getElementById('search-input');
-    const micIcon = document.querySelector('.fa-microphone');
-    const statusDiv = document.getElementById('listening-status');
-    let silenceTimeout;
-
-    micIcon.addEventListener('click', () => {
-        if (!window.annyang) {
-            alert('Voice recognition not supported.');
-            return;
-        }
-
-        annyang.abort();
-        annyang.removeCommands();
-        annyang.removeCallback();
-
-        micIcon.classList.add('listening');
-        statusDiv.style.display = 'block';
-
-        annyang.addCallback('result', function (phrases) {
-            const phrase = phrases[0];
-            searchInput.value = phrase;
-
-            if (silenceTimeout) clearTimeout(silenceTimeout);
-            silenceTimeout = setTimeout(() => {
-                annyang.abort();        
-                handleSearch();          
-            }, 5000);
-        });
-
-        annyang.addCallback('end', () => {
-            micIcon.classList.remove('listening');
-            statusDiv.style.display = 'none';
-        });
-
-        annyang.start({ autoRestart: false, continuous: true });
-    });
-
     document.querySelector('.fa-search').addEventListener('click', handleSearch);
+     window.onload = function () {
+            const searchInput = document.getElementById('search-input');
+            const micBtn = document.getElementById('mic-search');
+            const statusText = document.getElementById('listening-status');
+            let recognition;
+            let isListening = false;
 
+            // Check if webkitSpeechRecognition is available in the browser
+            if (!('webkitSpeechRecognition' in window)) {
+                statusText.textContent = 'Voice recognition not supported.';
+                console.error('Voice recognition not supported in this browser.');
+                return;
+            }
+
+            // Initialize recognition only once
+            recognition = new webkitSpeechRecognition();
+            recognition.lang = 'en-US'; // Set the language for recognition
+            recognition.continuous = false; // Stop after one result
+
+            micBtn.addEventListener('click', () => {
+                // Prevent duplicate sessions
+                if (isListening) {
+                    recognition.abort();
+                    statusText.textContent = 'Speech recognition stopped.';
+                    isListening = false;
+                    micBtn.disabled = false;
+                    return;
+                }
+
+                recognition.onstart = () => {
+                    console.log('[INFO] Speech recognition started');
+                    isListening = true;
+                    statusText.textContent = 'Listening... 🎤';
+                    micBtn.disabled = true;
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    console.log('[INFO] Result:', transcript);
+                    if (transcript) {
+                        searchInput.value = transcript;  // Update search input with recognized text
+                        statusText.textContent = '';
+                    } else {
+                        statusText.textContent = 'No speech detected.';
+                        console.log('[INFO] No speech detected.');
+                    }
+                };
+
+                recognition.onerror = (event) => {
+                    console.error('[ERROR] Speech:', event.error);
+                    statusText.textContent = 'Error: ' + event.error;
+                    isListening = false;
+                    micBtn.disabled = false;
+                };
+
+                recognition.onend = () => {
+                    console.log('[INFO] Speech recognition ended');
+                    if (statusText.textContent === 'Listening... 🎤') {
+                        statusText.textContent = 'No voice detected.';
+                    }
+                    isListening = false;
+                    micBtn.disabled = false;
+                };
+
+                // Start speech recognition
+                try {
+                    recognition.start();
+                    console.log('[INFO] Speech recognition started...');
+                } catch (error) {
+                    console.error('[ERROR] Speech recognition failed to start:', error);
+                }
+            });
+        };
     function handleImageFile(file) {
         const maxSizeMB = 5;
         const fileSizeMB = file.size / (1024 * 1024);
@@ -151,7 +185,7 @@ window.onload = function () {
     });
     
     
-};
+
 
 let sliderOpen = false;
 
