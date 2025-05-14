@@ -88,6 +88,7 @@ body {
 
 .input-icons i {
     cursor: pointer;
+    font-size: 20px;
 }
 
 #search-button {
