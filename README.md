@@ -1,4 +1,4 @@
-# Mining-search-engine
+# J&A Express-search-engine
 Click on the image to watch the demo video!!
 [![Watch the video](screenshot.png)](https://drive.google.com/file/d/1gBtSmx6MZScTWgpmtq88dx_1og7fv3PX/view?usp=sharing)
 
