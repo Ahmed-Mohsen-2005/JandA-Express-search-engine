@@ -56,11 +56,14 @@ J&A Express search engine is a multilingual, web-based search engine built with 
 Open http://localhost:5000 in your browser.
 
 
+
 ## Usage: 
 - Enter a search query, select a retrieval model, and (optionally) enable RM3 query expansion.
 - Browse, favorite, and explore results.
 - Switch interface language as needed.
 
-  ## 👨‍👩‍👧‍👦 Authors
+---
+
+## 👨‍👩‍👧‍👦 Authors
 - Ahmed Mohsen (Me)
 - [@Jana-Ahmed-20005](https://github.com/Jana-Ahmed-20005)
